@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { useState } from "react";
 import Svg, { SvgXml } from "react-native-svg";
-import { launchImageLibrary } from "react-native-image-picker";
+import ImagePicker from "react-native-image-picker";
+import * as ImagePicker2 from "expo-image-picker";
 
 export const Gallery = ({ title }) => {
 	const [showGallery, setShowGallery] = useState(false);
@@ -12,47 +13,75 @@ export const Gallery = ({ title }) => {
 	const [showCount, setShowCount] = useState(0);
 	const [showDeclineCount, setShowDeclineCount] = useState(0);
 
-	const openUserPhotos = () => {
-		const imageOptions = {
-			mediaType: "photo",
-			includeBase64: false,
-			maxHeight: 600,
-			maxWidth: 600,
-		};
+	// using image picker from react-native-image-picker (DOES NOT WORK)
+	// error that it gives: "Possible unhandled promise rejection: TypeError: Cannot read property 'launchImageLibrary' of undefined"
+	const openUserPhotos = async () => {
+		if (ImagePicker.launchImageLibrary) {
+			const imageOptions = {
+				mediaType: "photo",
+				includeBase64: true,
+				maxHeight: 600,
+				maxWidth: 600,
+			};
+			console.log("here?");
 
-		launchImageLibrary(options, (res) => {
-			if(res.didCancel) {
-				console.log("Canceled photo selection!");
+			try {
+				const res = await ImagePicker.showImagePicker(imageOptions);
+				console.log(res);
+			} catch (err) {
+				console.log(err);
 			}
-			else if(res.error) {
-				console.log("Error message: ", res.error);
-			}
-			else{
-				setSelectedPhoto({
-					uri: res.uri,
-					assets: res.assets,
-				});
-			}
-		})
+
+			console.log("here now?");
+		} else {
+			console.log("ImagePicker error...");
+		}
 	};
 
+	// using image picker from expo-image-picker (WORKS)
+	const openUserPhotos2 = async () => {
+		let result = await ImagePicker2.launchImageLibraryAsync({
+			mediaTypes: ImagePicker2.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+
+		console.log(result.assets);
+
+		if (!result.canceled) {
+			console.log("IMAGE HAHAHAHA");
+			setSelectedPhoto(result.assets[0]?.uri);
+		}
+	};
+
+	// open user's photo gallery
 	const openGallery = () => {
 		console.log("API CALL TO OPEN GALLERY");
+		// openUserPhotos();
+		openUserPhotos2();
 		setShowCount((p) => p + 1);
 		setShowGallery((prev) => !prev);
 	};
 
+	// decline opening user's photo gallery
 	const notNow = () => {
 		console.log("DO NOT OPEN GALLERY");
+		alert("hello");
 		setShowDeclineCount((p) => p + 1);
 		setDeclineGallery((prev) => !prev);
+		setShowGallery(null);
 	};
 
 	return (
 		<View style={styles.container}>
-			<Svg style={styles.svg}>
-				<SvgXml xml={GallerySVG} />
-			</Svg>
+			{selectedPhoto ? (
+				<Image source={{ uri: selectedPhoto }} style={{ width: 300, height: 300 }} />
+			) : (
+				<Svg style={styles.svg}>
+					<SvgXml xml={GallerySVG} />
+				</Svg>
+			)}
 
 			<View style={styles.bottomContent}>
 				<Text style={styles.titleText}>{title}</Text>

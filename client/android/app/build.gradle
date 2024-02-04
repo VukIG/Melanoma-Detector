@@ -160,6 +160,8 @@ dependencies {
 
     implementation("com.facebook.react:flipper-integration")
 
+    implementation project(':react-native-image-picker')
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
