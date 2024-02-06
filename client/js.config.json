@@ -1,0 +1,18 @@
+{
+    "extends": "expo/jsconfig.base",
+    "compilerOptions": {
+      "strict": true,
+      "baseUrl": ".",
+      "paths": {
+        "@assets/*": ["src/assets/*"],
+        "@components/*": ["src/components/*"],
+        "@constants/*": ["src/constants/*"],
+        "@hooks/*": ["src/hooks/*"],
+        "@helpers/*": ["src/helpers/*"],
+        "@screens/*": ["src/screens/*"],
+        "@navigation/*": ["src/navigation/*"]
+      }
+    },
+    "exclude": ["node_modules", "build", "dist"]
+  }
+  
