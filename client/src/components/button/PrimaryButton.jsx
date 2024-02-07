@@ -10,7 +10,7 @@ export const PrimaryButton = ({ title, style, onPress }) => {
 
   return (
     <TouchableOpacity
-      style={[{ padding: scale(16), width: "100%" }, style]}
+      style={[{ width: "100%" }, style]}
       onPress={onPress}>
       <LinearGradient
         style={[
