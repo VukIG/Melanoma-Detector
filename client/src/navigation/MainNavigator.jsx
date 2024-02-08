@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import WelcomeScreen from "@screens/Welcome";
-import GrantPermissionScreen from "@screens/GrantPermission";
+import GrantCameraPermissionScreen from "@screens/GrantCameraPermissionScreen";
 
 const MainStack = createStackNavigator();
 
@@ -15,8 +15,7 @@ const MainNavigator = () => {
           headerShown: false,
         }}>
         <MainStack.Screen name={"Welcome"} component={WelcomeScreen} />
-        <MainStack.Screen name={"GrantPermission"} component={GrantPermissionScreen}
-        />
+        <MainStack.Screen name={"GrantCameraPermissionScreen"} component={GrantCameraPermissionScreen} />
       </MainStack.Navigator>
     </NavigationContainer>
   );

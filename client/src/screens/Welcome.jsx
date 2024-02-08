@@ -49,7 +49,7 @@ const WelcomeScreen = ({ navigation }) => {
                 marginTop: scaleVertical(30),
                 paddingHorizontal: scale(48),
               }}
-              onPress={() => navigation.navigate("GrantPermission")}
+              onPress={() => navigation.navigate("GrantCameraPermissionScreen")}
             />
           </View>
         </View>

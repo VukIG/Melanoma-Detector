@@ -6,10 +6,25 @@ import { SecondaryButton } from "../components/button/SecondaryButton";
 import { ProgressStepBar } from "../components/ProgressStepBar";
 import { scaleVertical } from "../helpers/scale";
 import { AllowCamera } from "../constants/svg";
+import * as ImagePicker from "expo-image-picker";
+import PermissionsContext from "../context/PermissionsContext";
+import { useContext } from "react";
 
-
-const GrantPermissionScreen = ({ navigation }) => {
+const GrantCameraPermissionScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
+
+
+  const { cameraPermission, setCameraPermission} = useContext(PermissionsContext);
+
+  const grantCameraPermission = async () => {
+    const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+    if (cameraStatus.status == "granted") {
+      setCameraPermission(true);
+    } else {
+      setCameraPermission(false);
+    }
+    navigation.navigate("GrantGalleryPermissionScreen");
+  };
 
   return (
     <BaseScreen>
@@ -44,4 +59,4 @@ const GrantPermissionScreen = ({ navigation }) => {
   );
 };
 
-export default GrantPermissionScreen;
+export default GrantCameraPermissionScreen;
