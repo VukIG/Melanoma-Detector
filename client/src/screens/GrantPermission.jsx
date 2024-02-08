@@ -23,21 +23,25 @@ const GrantPermissionScreen = ({ navigation }) => {
         </View>
         <Text style={[
           basicStyles.FONTPRIMARY,
-          {fontSize:40, textAlign: 'center', marginTop: -40}
+          {fontSize:40, textAlign: 'center', marginTop: -90}
         ]}>
           Allow your camera
         </Text>
         <View style={[
           basicStyles.CENTER_COL,
-          { width: "70%", flex: 1, gap: 20 }
+          { width: "70%", flex: 1, gap: 20}
         ]}>
-          <Text>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</Text>
-          <PrimaryButton title={"Back"} onPress={() => navigation.goBack()} />
-          <SecondaryButton title={"Back"} onPress={() => navigation.goBack()} />
+          <Text style={[basicStyles.FONT16]}>
+            We need an image of your mole. Please
+            grant us the permission to access your camera or gallery in order to get the image.
+          </Text>
+          <PrimaryButton title={"Enable Camera"} onPress={() => grantCameraPermission()} />
+          <SecondaryButton title={"Not now"} onPress={() => navigation.goBack()} />
         </View>
         <ProgressStepBar stepSize={4} currentStepIndex={1} />
       </View>
     </BaseScreen>
   );
 };
+
 export default GrantPermissionScreen;

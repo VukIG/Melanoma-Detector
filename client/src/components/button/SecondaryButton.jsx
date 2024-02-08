@@ -1,66 +1,37 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import MaskedView from '@react-native-masked-view/masked-view';
 import { colors } from '../../constants/color';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
 import { scale, scaleVertical } from '../../helpers/scale';
 import PropTypes from "prop-types";
 
-export const SecondaryButton = ({ title,style, onPress }) => {
+export const SecondaryButton = ({ title, style, onPress }) => {
   const basicStyles = useGlobalStyle();
 
   return (
-    <MaskedView
-      style={{ width: '100%' }}
-      maskElement={
-        <TouchableOpacity onPress={onPress}>
-            <View
-                style={{
-                    backgroundColor: 'transparent',
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <View style={{ backgroundColor: 'white', borderRadius: scale(16) }}>
-                    <Text style={[basicStyles.FONT20, { textAlign: 'center', padding: scale(12) }]}>{title}</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
-      }>
-
-        <LinearGradient
-            style={[
-              basicStyles.CENTER_COL,
-              {
-                width: '100%',
+    <TouchableOpacity
+        onPress={onPress}
+        style={[
+            {
+                textAlign:"center",
                 paddingHorizontal: scale(12),
-                paddingVertical: scaleVertical(12),
+                paddingVertical: scaleVertical(10),
+                paddingHorizontal: scaleVertical(93),
                 borderRadius: scale(16),
-              },
-            ]}
-            colors={[colors.primary, colors.secondary]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            locations={[0.2, 1]}
+                borderWidth:1.3,
+                borderRadius:scale(16),
+                borderColor: colors.primary,
+            },
+        ]}    
+    >
+        <View
+        style={[{ width: "100%" }, style]}
         >
-        <TouchableOpacity onPress={onPress}>
-            <View
-                style={{
-                    backgroundColor: 'transparent',
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <View style={{ backgroundColor: 'white', borderRadius: scale(16) }}>
-                    <Text style={[basicStyles.FONT20, { opacity:0 ,textAlign: 'center', padding: scale(12) }]}>{title}</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
-        </LinearGradient>
-    </MaskedView>
+            <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>{title}</Text>
+        </View>    
+    </TouchableOpacity>
+    
   );
 };
 
