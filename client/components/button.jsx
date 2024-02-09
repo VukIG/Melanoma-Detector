@@ -1,65 +1,64 @@
-import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { Feather, AntDesign } from '@expo/vector-icons';
+import * as ImagePicker from "expo-image-picker";
+// import { LinearGradient } from 'expo-linear-gradient';
+import styles from '../components/Styles'; 
 
-const App = () => {
-  const onPressHandler = () => {
-    console.log('Button Pressed');
+const ImageButtons = ({ setImage }) => {
+  const [cameraPermission, setCameraPermission] = useState(null);
+  const [galleryPermission, setGalleryPermission] = useState(null);
+
+  const grabFromCamera = async () => {
+    const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+    if (cameraStatus.status === "granted") {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setImage(result.assets[0].uri);
+      }
+    } else {
+      setCameraPermission(false);
+    }
   };
 
-  const onSecondButtonPress = () => {
-    console.log('Second button pressed!');
+  const grabFromLibrary = async () => {
+    const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (galleryStatus.status === "granted") {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setImage(result.assets[0].uri);
+      }
+    } else {
+      setGalleryPermission(false);
+    }
   };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.button} onPress={grabFromCamera}>
+        <Feather name="camera" size={24} color="white" style={styles.buttonIcons}/>
+        <Text style={styles.buttonTextWhite}>Take a picture</Text>
+      </TouchableOpacity>
 
-    {/* <Container style={styles.container}> */}
-    <TouchableOpacity style={styles.button} onPress={onPressHandler}>
-      <Text style={styles.buttonTextWhite}>Take a picture</Text>
-      <Feather name="camera" size={24} color="white" />
-    </TouchableOpacity>
-
-    <TouchableOpacity style={[styles.button, styles.whiteButton]} onPress={onSecondButtonPress}>
+      <TouchableOpacity style={[styles.button, styles.whiteButton]} onPress={grabFromLibrary}>
+      {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.gradient}></LinearGradient> */}
+        <AntDesign name="picture" size={24} color="black" style={styles.buttonIcons}/>
         <Text style={styles.buttonTextBlue}>Open Gallery</Text>
-        <AntDesign name="picture" size={24} color="black" />
-    </TouchableOpacity>
+      </TouchableOpacity>
     </View>
- 
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    },
-button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    marginRight: 20,
-    alignItems: 'center',
-    justifyContent: 'center', 
-  },
-  buttonTextWhite: {
-    color: 'white',
-    textAlign: 'center',
-    marginRight: 10,
-  },
-  buttonTextBlue: {
-    color: 'blue',
-    textAlign: 'center',
-    marginRight: 10,
-  },
-  whiteButton: {
-    backgroundColor: 'white',
-    borderColor: 'blue',
-    borderWidth: 1, // Adjust border width as needed
-  },
-});
-
-export default App;
+export default ImageButtons;
