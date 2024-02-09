@@ -1,1 +1,20 @@
+from PIL import Image, ImageDraw, ImageFont
 
+# Load the background image
+background_image = Image.open("doctor.jpg")
+
+# Load the foreground image
+foreground_image = Image.open("foreground.png")
+
+# Resize the foreground image to fit the background image
+foreground_image = foreground_image.resize(background_image.size)
+
+# Create a new image with the background image
+new_image = Image.new(background_image.mode, background_image.size)
+new_image.paste(background_image)
+
+# Add the foreground image to the new image
+new_image.paste(foreground_image, (0, 0), foreground_image)
+
+# Save the new image
+new_image.save("output.jpg")
