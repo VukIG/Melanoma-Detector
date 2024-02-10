@@ -33,15 +33,20 @@ const ScanPhotoScreen = ({ navigation }) => {
             Architecto, distinctio similique.
           </Text>
         </View>
-        <View style={[basicStyles.CENTER_ROW, { width: '50%', height: '30%', rowGap:'10' }]}>
-          <PrimaryButton 
-          title={'Take a picture'} 
-          icon={<Ionicons name="image-outline" size={24} color="white" />}
+        <View
+          style={[
+            basicStyles.CENTER_ROW,
+            { width: '50%', height: '30%', rowGap: '10' },
+          ]}
+        >
+          <PrimaryButton
+            title={'Take a picture'}
+            icon={<Ionicons name="image-outline" size={24} color="white" />}
           />
-          <SecondaryButton 
-          title={'Upload from gallery'} 
-          icon={<Ionicons name="camera-outline" size={24} color="white" />}
-          style={{ height: 30, width: 'auto' }}
+          <SecondaryButton
+            title={'Upload from gallery'}
+            icon={<Ionicons name="camera-outline" size={24} color="white" />}
+            style={{ height: 30, width: 'auto' }}
           />
         </View>
         <ProgressStepBar currentStepIndex={3} />

@@ -5,7 +5,7 @@ import { useGlobalStyle } from '../../hooks/useGlobalStyle';
 import { scale, scaleVertical } from '../../helpers/scale';
 import PropTypes from 'prop-types';
 
-export const SecondaryButton = ({ title,icon, style, onPress }) => {
+export const SecondaryButton = ({ title, icon, style, onPress }) => {
   const basicStyles = useGlobalStyle();
 
   return (
@@ -28,7 +28,7 @@ export const SecondaryButton = ({ title,icon, style, onPress }) => {
         <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
           {title}
         </Text>
-        { icon }
+        {icon}
       </View>
     </TouchableOpacity>
   );
@@ -38,5 +38,5 @@ SecondaryButton.propTypes = {
   title: PropTypes.string.isRequired,
   style: PropTypes.object,
   onPress: PropTypes.func,
-  icon: PropTypes.element
+  icon: PropTypes.element,
 };
