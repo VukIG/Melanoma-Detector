@@ -1,12 +1,11 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../../constants/color';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
 import { scale, scaleVertical } from '../../helpers/scale';
 import PropTypes from 'prop-types';
 
-export const SecondaryButton = ({ title, style, onPress }) => {
+export const SecondaryButton = ({ title,icon, style, onPress }) => {
   const basicStyles = useGlobalStyle();
 
   return (
@@ -29,6 +28,7 @@ export const SecondaryButton = ({ title, style, onPress }) => {
         <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
           {title}
         </Text>
+        { icon }
       </View>
     </TouchableOpacity>
   );
@@ -38,4 +38,5 @@ SecondaryButton.propTypes = {
   title: PropTypes.string.isRequired,
   style: PropTypes.object,
   onPress: PropTypes.func,
+  icon: PropTypes.element
 };

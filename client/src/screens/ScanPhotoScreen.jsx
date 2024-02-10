@@ -6,6 +6,7 @@ import { PrimaryButton } from '../components/button/PrimaryButton';
 import { SecondaryButton } from '../components/button/SecondaryButton';
 import { ProgressStepBar } from '../components/ProgressStepBar';
 import { WelcomeSvg } from '../constants/svg';
+import { Ionicons } from '@expo/vector-icons';
 
 const ScanPhotoScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
@@ -32,9 +33,16 @@ const ScanPhotoScreen = ({ navigation }) => {
             Architecto, distinctio similique.
           </Text>
         </View>
-        <View style={[basicStyles.CENTER_ROW, { width: '50%', height: '30%' }]}>
-          <PrimaryButton title={'Take a picture'} />
-          <SecondaryButton title={'Upload from gallery'} />
+        <View style={[basicStyles.CENTER_ROW, { width: '50%', height: '30%', rowGap:'10' }]}>
+          <PrimaryButton 
+          title={'Take a picture'} 
+          icon={<Ionicons name="image-outline" size={24} color="white" />}
+          />
+          <SecondaryButton 
+          title={'Upload from gallery'} 
+          icon={<Ionicons name="camera-outline" size={24} color="white" />}
+          style={{ height: 30, width: 'auto' }}
+          />
         </View>
         <ProgressStepBar currentStepIndex={3} />
       </View>
