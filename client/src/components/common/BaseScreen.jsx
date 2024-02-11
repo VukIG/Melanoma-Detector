@@ -28,7 +28,8 @@ export const BaseScreen = ({
         {
           backgroundColor: backgroundColor ? backgroundColor : colors.white,
         },
-      ]}>
+      ]}
+    >
       {backgroundImage && (
         <Image
           source={backgroundImage}
@@ -48,7 +49,8 @@ export const BaseScreen = ({
                 : scaleVertical(102)
               : scale(0),
           },
-        ]}>
+        ]}
+      >
         {children}
       </View>
       <StatusBar />

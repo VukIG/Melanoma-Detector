@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState } from "react";
 
 const PermissionsContext = createContext();
 
@@ -7,7 +7,14 @@ export const PermissionProvider = ({ children }) => {
   const [galleryPermission, setGalleryPermission] = useState(false);
 
   return (
-    <PermissionsContext.Provider value={{ cameraPermission, setCameraPermission, galleryPermission, setGalleryPermission }}>
+    <PermissionsContext.Provider
+      value={{
+        cameraPermission,
+        setCameraPermission,
+        galleryPermission,
+        setGalleryPermission,
+      }}
+    >
       {children}
     </PermissionsContext.Provider>
   );

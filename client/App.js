@@ -10,6 +10,6 @@ export default function App() {
       <SafeAreaProvider>
         <MainNavigator />
       </SafeAreaProvider>
-    </ PermissionProvider>
+    </PermissionProvider>
   );
 }
