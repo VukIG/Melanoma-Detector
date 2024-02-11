@@ -20,6 +20,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
     const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
     if (cameraStatus.status == 'granted') {
       setCameraPermission(true);
+      navigation.navigate('ScanPhotoScreen');
       console.log('CHIPICHIPI DABA DUBI DUBI DABA');
       //Navigate to the next screen using the navigation.navigate
     } else {
