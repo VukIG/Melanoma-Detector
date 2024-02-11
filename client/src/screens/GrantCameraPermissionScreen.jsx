@@ -1,14 +1,14 @@
-import { View, Text } from "react-native";
-import { BaseScreen } from "../components/common/BaseScreen";
-import { useGlobalStyle } from "../hooks/useGlobalStyle";
-import { PrimaryButton } from "../components/button/PrimaryButton";
-import { SecondaryButton } from "../components/button/SecondaryButton";
-import { ProgressStepBar } from "../components/ProgressStepBar";
-import { scaleVertical } from "../helpers/scale";
-import { AllowCamera } from "../constants/svg";
-import * as ImagePicker from "expo-image-picker";
-import PermissionsContext from "../context/PermissionsContext";
-import { useContext } from "react";
+import { View, Text } from 'react-native';
+import { BaseScreen } from '../components/common/BaseScreen';
+import { useGlobalStyle } from '../hooks/useGlobalStyle';
+import { PrimaryButton } from '../components/button/PrimaryButton';
+import { SecondaryButton } from '../components/button/SecondaryButton';
+import { ProgressStepBar } from '../components/ProgressStepBar';
+import { scaleVertical } from '../helpers/scale';
+import { AllowCamera } from '../constants/svg';
+import * as ImagePicker from 'expo-image-picker';
+import PermissionsContext from '../context/PermissionsContext';
+import { useContext } from 'react';
 
 const GrantCameraPermissionScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
@@ -18,7 +18,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
 
   const grantCameraPermission = async () => {
     const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-    if (cameraStatus.status == "granted") {
+    if (cameraStatus.status == 'granted') {
       setCameraPermission(true);
       console.log("CHIPICHIPI DABA DUBI DUBI DABA");
       navigation.navigate("GrantGalleryPermissionScreen");
@@ -69,7 +69,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
             onPress={() => navigation.goBack()}
           />
         </View>
-        <ProgressStepBar stepSize={4} currentStepIndex={1} />
+        <ProgressStepBar currentStepIndex={1} />
       </View>
     </BaseScreen>
   );

@@ -6,6 +6,9 @@ import WelcomeScreen from "@screens/Welcome";
 import GrantCameraPermissionScreen from "@screens/GrantCameraPermissionScreen";
 import GrantGalleryPermissionScreen from "@screens/GrantGalleryPermissionScreen";
 
+import WelcomeScreen from '@screens/Welcome';
+import GrantCameraPermissionScreen from '@screens/GrantCameraPermissionScreen';
+import ScanPhotoScreen from '../screens/ScanPhotoScreen';
 const MainStack = createStackNavigator();
 
 const MainNavigator = () => {
@@ -24,6 +27,10 @@ const MainNavigator = () => {
         <MainStack.Screen
           name={"GrantGalleryPermissionScreen"}
           component={GrantGalleryPermissionScreen}
+        />    
+        <MainStack.Screen
+          name={'ScanPhotoScreen'}
+          component={ScanPhotoScreen}
         />
       </MainStack.Navigator>
     </NavigationContainer>
