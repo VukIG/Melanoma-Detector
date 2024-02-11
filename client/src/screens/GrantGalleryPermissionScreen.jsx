@@ -1,32 +1,18 @@
-import { View, Text, Stylesheet } from 'react-native';
-import { useState, useContext } from 'react';
+import { View, Text } from 'react-native';
+import { useContext } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
 import { AllowGallery } from '../constants/svg';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { SecondaryButton } from '../components/button/SecondaryButton';
-import * as ImagePicker from 'expo-image-picker';
 import { scaleVertical } from '../helpers/scale';
 import { BaseScreen } from '../components/common/BaseScreen';
 import { ProgressStepBar } from '../components/ProgressStepBar';
 
 const GrantGalleryPermissionScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
-  const { galleryPermission, setGalleryPermission } =
-    useContext(PermissionsContext);
+  const { grantPermission } = useContext(PermissionsContext);
 
-  const grantGalleryPermission = async () => {
-    const galleryStatus =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (galleryStatus.status == 'granted') {
-      setGalleryPermission(true);
-      console.log('CHIPICHIPI DABA DUBI DUBI DABA');
-      //Navigate to the next screen using the navigation.navigate
-      navigation.navigate('ScanPhotoScreen');
-    } else {
-      setGalleryPermission(false);
-    }
-  };
   return (
     <BaseScreen>
       <View
@@ -62,7 +48,10 @@ const GrantGalleryPermissionScreen = ({ navigation }) => {
           <View style={{ width: '100%' }}>
             <PrimaryButton
               title={'Grant Access'}
-              onPress={grantGalleryPermission}
+              onPress={() => {
+                grantPermission(false);
+                navigation.navigate('ScanPhotoScreen');
+              }}
             />
             <SecondaryButton
               title={'Not now'}
