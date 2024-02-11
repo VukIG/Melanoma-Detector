@@ -15,7 +15,7 @@ export const SecondaryButton = ({ title, icon, style, onPress }) => {
         {
           textAlign: 'center',
           paddingHorizontal: scale(12),
-          paddingVertical: scaleVertical(10),
+          paddingVertical: scaleVertical(14),
           paddingHorizontal: scaleVertical(93),
           borderRadius: scale(16),
           borderWidth: 1.3,
@@ -24,8 +24,8 @@ export const SecondaryButton = ({ title, icon, style, onPress }) => {
         },
       ]}
     >
-      <View style={[{ width: '100%' }, style]}>
-        <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap:10 }}>
+          <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
           {title}
         </Text>
         {icon}

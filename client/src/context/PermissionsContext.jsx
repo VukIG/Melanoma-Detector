@@ -5,6 +5,7 @@ const PermissionsContext = createContext();
 export const PermissionProvider = ({ children }) => {
   const [cameraPermission, setCameraPermission] = useState(false);
   const [galleryPermission, setGalleryPermission] = useState(false);
+  const [image,setImage] = useState('');
 
   return (
     <PermissionsContext.Provider
@@ -13,6 +14,8 @@ export const PermissionProvider = ({ children }) => {
         setCameraPermission,
         galleryPermission,
         setGalleryPermission,
+        image,
+        setImage
       }}
     >
       {children}

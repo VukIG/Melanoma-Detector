@@ -16,8 +16,9 @@ export const PrimaryButton = ({ title, style, onPress, icon }) => {
           {
             width: '100%',
             paddingHorizontal: scale(12),
-            paddingVertical: scaleVertical(12),
+            paddingVertical: scaleVertical(14),
             borderRadius: scale(16),
+            marginBottom: scale(10)
           },
         ]}
         colors={[colors.primary, colors.secondary]}
@@ -25,7 +26,7 @@ export const PrimaryButton = ({ title, style, onPress, icon }) => {
         end={{ x: 1, y: 0 }}
         locations={[0.2, 1]}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap:10 }}>
           <Text style={[basicStyles.FONT20, basicStyles.FONTWHITE]}>
             {title}
           </Text>

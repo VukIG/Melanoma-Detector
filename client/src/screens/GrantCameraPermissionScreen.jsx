@@ -59,14 +59,16 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
             We need an image of your mole. Please grant us the permission to
             access your camera or gallery in order to get the image.
           </Text>
-          <PrimaryButton
-            title={'Enable Camera'}
-            onPress={() => grantCameraPermission()}
-          />
-          <SecondaryButton
-            title={'Not now'}
-            onPress={() => navigation.navigate('ScanPhotoScreen')}
-          />
+          <View style={{width:"100%"}}>
+            <PrimaryButton
+              title={'Enable Camera'}
+              onPress={() => grantCameraPermission()}
+            />
+            <SecondaryButton
+              title={'Not now'}
+              onPress={() => navigation.navigate('ScanPhotoScreen')}
+            />
+          </View>
         </View>
         <ProgressStepBar currentStepIndex={1} />
       </View>
