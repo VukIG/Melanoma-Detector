@@ -12,33 +12,51 @@ import { useContext, useState } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
 
 const ScanPhotoScreen = ({ navigation }) => {
+
   const basicStyles = useGlobalStyle();
+  
   const [errors,setErrors] = useState({
-    camera: false,
-    gallery: false
-  })
-  const { cameraPermissions, galleryPermissions, setImage } = useContext(PermissionsContext)
-  console.log(cameraPermissions)
-  async function captuerImage() {
-    if (cameraPermissions === true) {
-      let result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-      });
-      
+    cameraDenied: false,
+    galleryDenied: false
+  });
+  
+  const { cameraPermission,setCameraPermission, galleryPermission, setGalleryPermission, setImage }
+  = useContext(PermissionsContext);
+
+  async function captureImage(isCamera) {
+    const permission = isCamera ? cameraPermission : galleryPermission;
+    const setPermission = isCamera ? setCameraPermission : setGalleryPermission;
+    const errorKey = isCamera ? 'camera' : 'gallery';
+  
+    if (permission === true) {
+      let result;
+      if (isCamera) {
+        result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 1,
+        });
+      } else {
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 1,
+        });
+      }
+  
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setImage(result.assets[0].uri);
       }
-    }
-    else{
-      setErrors(prevState => ({
+    } else {
+      setErrors((prevState) => ({
         ...prevState,
-        camera: true
-      }))
+        [errorKey]: true,
+      }));
     }
   }
+  
 
   return (
     <BaseScreen>
@@ -75,12 +93,13 @@ const ScanPhotoScreen = ({ navigation }) => {
           <PrimaryButton
             title={'Take a picture'}
             icon={<Ionicons name="camera-outline" size={24} color="white" />}
-            onPress={()=>{}}
+            onPress={()=>captureImage(true)}
           />
           <SecondaryButton
             title={'Upload from gallery'}
             icon={<Ionicons name="image-outline" size={24} color="rgb(0,179,255)" />}
             style={{ height: 30, width: "auto" }}
+            onPress={()=>captureImage(false)}
           />
         </View>
         <ProgressStepBar 

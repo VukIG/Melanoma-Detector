@@ -59,7 +59,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
             We need an image of your mole. Please grant us the permission to
             access your camera or gallery in order to get the image.
           </Text>
-          <View style={{width:"100%"}}>
+          <View style={{ width: '100%' }}>
             <PrimaryButton
               title={'Enable Camera'}
               onPress={() => grantCameraPermission()}

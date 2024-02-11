@@ -24,8 +24,8 @@ export const SecondaryButton = ({ title, icon, style, onPress }) => {
         },
       ]}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap:10 }}>
-          <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
           {title}
         </Text>
         {icon}
