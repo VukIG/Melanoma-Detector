@@ -9,7 +9,7 @@ export const PrimaryButton = ({ title, style, onPress, icon }) => {
   const basicStyles = useGlobalStyle();
 
   return (
-    <TouchableOpacity style={[{ width: "100%" }, style]} onPress={onPress}>
+    <TouchableOpacity style={[{ width: '100%' }, style]} onPress={onPress}>
       <LinearGradient
         style={[
           basicStyles.CENTER_COL,
