@@ -13,14 +13,15 @@ import { useContext } from "react";
 const GrantCameraPermissionScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
 
-
-  const { cameraPermission, setCameraPermission } = useContext(PermissionsContext);
+  const { cameraPermission, setCameraPermission } =
+    useContext(PermissionsContext);
 
   const grantCameraPermission = async () => {
     const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
     if (cameraStatus.status == "granted") {
       setCameraPermission(true);
-      console.log('CHIPICHIPI DABA DUBI DUBI DABA')
+      console.log("CHIPICHIPI DABA DUBI DUBI DABA");
+      navigation.navigate("GrantGalleryPermissionScreen");
       //Navigate to the next screen using the navigation.navigate
     } else {
       setCameraPermission(false);
@@ -33,26 +34,40 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
         style={[
           basicStyles.CENTER_COL,
           { flex: 1, paddingVertical: scaleVertical(30) },
-        ]}>
-        <View style={{ width:'100%',height:'70%',transform: [{ translateX: 35},{ translateY: 100 }]}}>
+        ]}
+      >
+        <View
+          style={{
+            width: "100%",
+            height: "70%",
+            transform: [{ translateX: 35 }, { translateY: 100 }],
+          }}
+        >
           <AllowCamera width={"100%"} height={"60%"} />
         </View>
-        <Text style={[
-          basicStyles.FONTPRIMARY,
-          {fontSize:40, textAlign: 'center', marginTop: -90}
-        ]}>
+        <Text
+          style={[
+            basicStyles.FONTPRIMARY,
+            { fontSize: 40, textAlign: "center", marginTop: -90 },
+          ]}
+        >
           Allow your camera
         </Text>
-        <View style={[
-          basicStyles.CENTER_COL,
-          { width: "70%", flex: 1, gap: 20}
-        ]}>
+        <View
+          style={[basicStyles.CENTER_COL, { width: "70%", flex: 1, gap: 20 }]}
+        >
           <Text style={[basicStyles.FONT16]}>
-            We need an image of your mole. Please
-            grant us the permission to access your camera or gallery in order to get the image.
+            We need an image of your mole. Please grant us the permission to
+            access your camera in order to take the image.
           </Text>
-          <PrimaryButton title={"Enable Camera"} onPress={() => grantCameraPermission()} />
-          <SecondaryButton title={"Not now"} onPress={() => navigation.goBack()} />
+          <PrimaryButton
+            title={"Enable Camera"}
+            onPress={grantCameraPermission}
+          />
+          <SecondaryButton
+            title={"Not now"}
+            onPress={() => navigation.goBack()}
+          />
         </View>
         <ProgressStepBar stepSize={4} currentStepIndex={1} />
       </View>

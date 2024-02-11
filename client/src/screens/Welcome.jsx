@@ -17,7 +17,8 @@ const WelcomeScreen = ({ navigation }) => {
           style={[
             basicStyles.CENTER_COL_BETWEEN,
             { flex: 1, paddingHorizontal: scale(30) },
-          ]}>
+          ]}
+        >
           <View
             style={[
               basicStyles.CENTER_COL,
@@ -26,7 +27,8 @@ const WelcomeScreen = ({ navigation }) => {
                 width: "100%",
                 gap: scaleVertical(8),
               },
-            ]}>
+            ]}
+          >
             <Text style={[basicStyles.FONT32, basicStyles.FONTPRIMARY]}>
               Welcome to CDA
             </Text>
@@ -38,7 +40,8 @@ const WelcomeScreen = ({ navigation }) => {
                   paddingHorizontal: scale(32),
                   textAlign: "center",
                 },
-              ]}>
+              ]}
+            >
               {
                 "Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit,\nsed do eiusmod tempor"
               }
