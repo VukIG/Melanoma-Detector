@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 const PermissionsContext = createContext();
 
@@ -62,12 +63,36 @@ export const PermissionProvider = ({ children }) => {
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setImage(result.assets[0].uri);
+        sendImage();
       }
     } else {
       setErrors((prevState) => ({
         ...prevState,
         [errorKey]: true,
       }));
+    }
+  };
+
+  const sendImage = async (imageUri) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', {
+        uri: imageUri,
+        name: 'image.jpg',
+        type: 'image/jpeg',
+      });
+  
+      const response = await axios.post('YOUR_SERVER_ENDPOINT', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log('Image uploaded successfully:', response.data);
+      
+    } catch (error) {
+      console.error('Error uploading image:', error);
+
     }
   };
 
