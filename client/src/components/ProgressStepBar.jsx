@@ -1,10 +1,10 @@
-import { View } from "react-native";
-import PropTypes from "prop-types";
-import { scale } from "../helpers/scale";
-import { useGlobalStyle } from "../hooks/useGlobalStyle";
-import { colors } from "../constants/color";
+import { View } from 'react-native';
+import PropTypes from 'prop-types';
+import { scale } from '../helpers/scale';
+import { useGlobalStyle } from '../hooks/useGlobalStyle';
+import { colors } from '../constants/color';
 
-export const ProgressStepBar = ({ stepSize = 4, currentStepIndex = 0 }) => {
+export const ProgressStepBar = ({ stepSize = 5, currentStepIndex = 0 }) => {
   const basicStyles = useGlobalStyle();
 
   const StepCircle = ({ isPending = false }) => (
@@ -21,7 +21,7 @@ export const ProgressStepBar = ({ stepSize = 4, currentStepIndex = 0 }) => {
     <View style={[basicStyles.CENTER_ROW, { gap: scale(8) }]}>
       {Array.from({ length: stepSize }).map((item, index) => (
         <StepCircle
-          key={"progressstep" + index}
+          key={'progressstep' + index}
           isPending={index === currentStepIndex}
         />
       ))}

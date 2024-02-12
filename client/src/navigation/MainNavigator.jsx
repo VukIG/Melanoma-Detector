@@ -1,9 +1,11 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-import WelcomeScreen from "@screens/Welcome";
-import GrantCameraPermissionScreen from "@screens/GrantCameraPermissionScreen";
+import WelcomeScreen from '@screens/Welcome';
+import GrantCameraPermissionScreen from '@screens/GrantCameraPermissionScreen';
+import GrantGalleryPermissionScreen from '@screens/GrantGalleryPermissionScreen';
+import ScanPhotoScreen from '../screens/ScanPhotoScreen';
 
 const MainStack = createStackNavigator();
 
@@ -13,9 +15,21 @@ const MainNavigator = () => {
       <MainStack.Navigator
         screenOptions={{
           headerShown: false,
-        }}>
-        <MainStack.Screen name={"Welcome"} component={WelcomeScreen} />
-        <MainStack.Screen name={"GrantCameraPermissionScreen"} component={GrantCameraPermissionScreen} />
+        }}
+      >
+        <MainStack.Screen name={'Welcome'} component={WelcomeScreen} />
+        <MainStack.Screen
+          name={'GrantCameraPermissionScreen'}
+          component={GrantCameraPermissionScreen}
+        />
+        <MainStack.Screen
+          name={'GrantGalleryPermissionScreen'}
+          component={GrantGalleryPermissionScreen}
+        />
+        <MainStack.Screen
+          name={'ScanPhotoScreen'}
+          component={ScanPhotoScreen}
+        />
       </MainStack.Navigator>
     </NavigationContainer>
   );
