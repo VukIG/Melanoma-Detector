@@ -75,16 +75,15 @@ export const PermissionProvider = ({ children }) => {
 
   const sendImage = async (imageUri) => {
     try {
+      let blobFormat = dataUrItoBlob(imageUri);
       const formData = new FormData();
       formData.append('image', {
-        uri: imageUri,
-        name: 'image.jpg',
-        type: 'image/jpeg',
+        image: blobFormat,
       });
   
       const response = await axios.post('YOUR_SERVER_ENDPOINT', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'image/jpeg',
         },
       });
   
@@ -95,6 +94,17 @@ export const PermissionProvider = ({ children }) => {
 
     }
   };
+
+  //shoutout to Kharkovsky https://gist.github.com/Kashkovsky/093fc4174cf52fccf81477a9bbf5ecd1
+  function dataUrItoBlob(dataUri) {
+    let binary = atob(dataUri.split(',')[1]);
+    let mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
+    let array = [];
+    for (let i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], { type: mimeString });
+};
 
   return (
     <PermissionsContext.Provider

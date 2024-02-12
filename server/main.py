@@ -11,8 +11,6 @@ app = FastAPI()
 
 class PatientInfo(BaseModel):
     image: bytes
-    name: str
-    type: str
 
 #CORS ERRORI SKINUTI
 
@@ -26,8 +24,8 @@ app.add_middleware(
 
 
 # Load your cancer detection model only once when the app starts
-saved_model_path = '/home/vuk/Documents/Cancer-Detection-App/server/model/'
-model = tf.saved_model.load(saved_model_path)
+saved_model_path = "/home/vuk/Documents/ML/model/model.h5"
+model = tf.keras.models.load_model(saved_model_path)
 
 
 def process_image(image_bytes: bytes):

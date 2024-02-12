@@ -9,8 +9,8 @@ export const ImageProvider = ({ children }) => {
     return(
         <ImageContext.Provider
             value={{
-
-            
+                image,
+                setImage
             }}
         >
             {children}

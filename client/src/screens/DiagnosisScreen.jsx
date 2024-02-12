@@ -20,7 +20,7 @@ const DiagnosisScreen = () => {
           <PrimaryButton
             title={'Re-take a picture'}
             icon={<Ionicons name="camera-outline" size={24} color="white" />}
-            onPress={() => captureImage(true)}
+            onPress={() => captureImage(true)} //make sure to cover ther SRBIJA case if the user didn't grant perm
           />
           <SecondaryButton
             title={'Re-upload an image'}
