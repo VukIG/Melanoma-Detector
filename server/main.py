@@ -48,4 +48,4 @@ async def predict_cancer(patient_info: PatientInfo):
     image = Image.open(io.BytesIO(base64_decoded))
     image_np = np.array(image)
 
-    return {'message' : print(image_np)}
+    return {'message' : 'gg lil'}

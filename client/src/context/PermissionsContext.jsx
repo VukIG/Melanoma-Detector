@@ -66,7 +66,6 @@ export const PermissionProvider = ({ children }) => {
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setImage(result.assets[0].base64);
         sendImage();
-        console.log(image);
       }
     } else {
       setErrors((prevState) => ({
@@ -81,17 +80,18 @@ export const PermissionProvider = ({ children }) => {
       const formData = new FormData();
       formData.append('image', base64Image);
   
-      fetch('http://192.168.1.3:8080')
+      fetch('https://mda-server-api.onrender.com/predict', {
+        method: 'POST',
+        body: formData
+      })
         .then(res => {
           if (!res.ok) {
             throw new Error('Network response was not ok');
           }
           return res.json();
         })
-        .then(data => console.log(data))
+        .then(data => console.log(data.message))
         .catch(error => console.error('Error:', error));
-
-      console.log('Image uploaded successfully:', response.data);
       
     } catch (error) {
       console.error('Error uploading image:', error);
