@@ -51,6 +51,7 @@ export const PermissionProvider = ({ children }) => {
           allowsEditing: true,
           aspect: [1, 1],
           quality: 1,
+          base64: true
         });
       } else {
         result = await ImagePicker.launchImageLibraryAsync({
@@ -58,12 +59,13 @@ export const PermissionProvider = ({ children }) => {
           allowsEditing: true,
           aspect: [1, 1],
           quality: 1,
+          base64: true,
         });
       }
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        setImage(result.assets[0].uri);
-        sendImage();
+        setImage(result.assets[0].base64);
+        console.log(image);
       }
     } else {
       setErrors((prevState) => ({
@@ -73,38 +75,9 @@ export const PermissionProvider = ({ children }) => {
     }
   };
 
-  const sendImage = async (imageUri) => {
-    try {
-      let blobFormat = dataUrItoBlob(imageUri);
-      const formData = new FormData();
-      formData.append('image', {
-        image: blobFormat,
-      });
   
-      const response = await axios.post('YOUR_SERVER_ENDPOINT', formData, {
-        headers: {
-          'Content-Type': 'image/jpeg',
-        },
-      });
-  
-      console.log('Image uploaded successfully:', response.data);
-      
-    } catch (error) {
-      console.error('Error uploading image:', error);
-
-    }
-  };
 
   //shoutout to Kharkovsky https://gist.github.com/Kashkovsky/093fc4174cf52fccf81477a9bbf5ecd1
-  function dataUrItoBlob(dataUri) {
-    let binary = atob(dataUri.split(',')[1]);
-    let mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
-    let array = [];
-    for (let i = 0; i < binary.length; i++) {
-        array.push(binary.charCodeAt(i));
-    }
-    return new Blob([new Uint8Array(array)], { type: mimeString });
-};
 
   return (
     <PermissionsContext.Provider
