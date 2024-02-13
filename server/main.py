@@ -4,11 +4,13 @@ from io import BytesIO
 from pydantic import BaseModel
 from PIL import Image
 import numpy as np
+import base64
+import io
 
 app = FastAPI()
 
 class PatientInfo(BaseModel):
-    image: bytes
+    image: str
 
 #CORS ERRORI SKINUTI
 
@@ -40,5 +42,10 @@ def index():
 
 @app.post('/predict')
 async def predict_cancer(patient_info: PatientInfo):
-    image_blob = patient_info.image
-    return {'message' : print(image_blob)}
+    base64_encoded= patient_info.image
+    base64_decoded = base64.b64decode(base64_encoded)
+
+    image = Image.open(io.BytesIO(base64_decoded))
+    image_np = np.array(image)
+
+    return {'message' : print(image_np)}

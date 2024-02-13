@@ -65,6 +65,7 @@ export const PermissionProvider = ({ children }) => {
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
         setImage(result.assets[0].base64);
+        sendImage();
         console.log(image);
       }
     } else {
@@ -75,9 +76,28 @@ export const PermissionProvider = ({ children }) => {
     }
   };
 
+  const sendImage = async (base64Image) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', base64Image);
   
+      fetch('http://192.168.1.3:8080')
+        .then(res => {
+          if (!res.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return res.json();
+        })
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
 
-  //shoutout to Kharkovsky https://gist.github.com/Kashkovsky/093fc4174cf52fccf81477a9bbf5ecd1
+      console.log('Image uploaded successfully:', response.data);
+      
+    } catch (error) {
+      console.error('Error uploading image:', error);
+
+    }
+  };
 
   return (
     <PermissionsContext.Provider
