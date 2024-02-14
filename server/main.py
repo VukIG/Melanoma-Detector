@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
 from pydantic import BaseModel
@@ -40,12 +40,24 @@ def process_image(image_bytes: bytes):
 def index():
     return {'message': 'Amenelibockura'}
 
-@app.post('/predict')
-async def predict_cancer(patient_info: PatientInfo):
-    base64_encoded= patient_info.image
-    base64_decoded = base64.b64decode(base64_encoded)
+@app.get('/predict')
+async def predict(photo: dict):
+    try:
+        print("File content: ", photo["image"]["_parts"][0][1]["uri"])
+        base64FromUser = photo["image"]["_parts"][0][1]["base64"]
 
-    image = Image.open(io.BytesIO(base64_decoded))
-    image_np = np.array(image)
+        tempImg = None
 
-    return {'message' : 'gg lil'}
+        with open("tempImgToSave.jpg", "wb") as file:
+            # tempImg = base64.b64decode(base64FromUser)  # actual image
+            file.write(base64.b64decode(base64FromUser))  # creating a new file and saving it to current directory
+        
+        print("tempImg: ", tempImg)
+
+        if not photo["image"]["_parts"][0][1]["uri"]:
+            return {"msg": "Failed to upload image to the server...", "status": 400}
+
+        return {"msg": "Image received!", "status": 200}
+
+    except Exception as e:
+        print("Error receiving image:", e)
