@@ -6,6 +6,7 @@ from PIL import Image
 import numpy as np
 import base64
 import io
+import requests #pip installation required + add the version to requirements.txt
 
 app = FastAPI()
 
@@ -35,6 +36,15 @@ def process_image(image_bytes: bytes):
     except Exception as e:
         print(f"Error processing image: {e}")
         return None
+
+API_URL = "https://api-inference.huggingface.co/models/milutinNemanjic/Melanoma-detection-model"
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
+
+def query(filename):
+    with open(filename, "rb") as f:
+        data = f.read()
+    response = requests.post(API_URL, headers=headers, data=data)
+    return response.json()
 
 @app.get('/')
 def index():
