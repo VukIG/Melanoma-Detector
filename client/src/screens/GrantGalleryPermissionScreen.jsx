@@ -59,7 +59,7 @@ const GrantGalleryPermissionScreen = ({ navigation }) => {
             />
           </View>
         </View>
-        <ProgressStepBar stepSize={4} currentStepIndex={1} />
+        <ProgressStepBar stepSize={5} currentStepIndex={2} />
       </View>
     </BaseScreen>
   );

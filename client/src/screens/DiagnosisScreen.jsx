@@ -6,7 +6,7 @@ import PrimaryButton from '../components/button/PrimaryButton';
 import SecondaryButton from '../components/button/SecondaryButton';
 import { Ionicons } from '@expo/vector-icons';
 const DiagnosisScreen = () => {
-  const { image, setImage, prediction, setPrediction } =
+  const { image, setImage, } =
     useContext(PermissionsContext);
 
   return (
@@ -14,7 +14,7 @@ const DiagnosisScreen = () => {
       <View>
         <Image uri={image} />
         <View>
-          <Text>{response}</Text>
+          <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</Text>
         </View>
         <View>
           <PrimaryButton

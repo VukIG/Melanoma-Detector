@@ -9,13 +9,14 @@ import { WelcomeSvg } from '../constants/svg';
 import { Ionicons } from '@expo/vector-icons';
 import { useContext, useState } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
+import ImageContext from "../context/ImageContext";
 
 const ScanPhotoScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
 
-  const [lastPressed, setLastPressed] = useState('none');
+  const { permissions, lastPressed, setLastPressed } = useContext(PermissionsContext);
 
-  const { permissions, captureImage } = useContext(PermissionsContext);
+  const { captureImage } = useContext(ImageContext);
 
   const promptUser = () => {
     let prompt;

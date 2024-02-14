@@ -31,10 +31,6 @@ const MainNavigator = () => {
           name={'ScanPhotoScreen'}
           component={ScanPhotoScreen}
         />
-        <MainStack.Screen
-          name={'DiagnosisScreen'}
-          component={DiagnosisScreen}
-        />
       </MainStack.Navigator>
     </NavigationContainer>
   );
