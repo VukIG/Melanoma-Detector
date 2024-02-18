@@ -32,10 +32,7 @@ const MainNavigator = () => {
           name={'ScanPhotoScreen'}
           component={ScanPhotoScreen}
         />
-        <MainStack.Screen
-          name={'FormScreen'}
-          component={FormScreen}
-        />
+        <MainStack.Screen name={'FormScreen'} component={FormScreen} />
         <MainStack.Screen
           name={'DiagnosisScreen'}
           component={DiagnosisScreen}

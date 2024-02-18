@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import { scale, scaleVertical } from '@helpers/scale';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
 import { colors } from '../../constants/color';
-import { useFonts } from "expo-font";
-import { Montserrat_400Regular } from "@expo-google-fonts/montserrat";
+import { useFonts } from 'expo-font';
+import { Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 
 export const BaseScreen = ({
   contentStyle,

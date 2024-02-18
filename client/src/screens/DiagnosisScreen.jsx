@@ -6,8 +6,7 @@ import PrimaryButton from '../components/button/PrimaryButton';
 import SecondaryButton from '../components/button/SecondaryButton';
 import { Ionicons } from '@expo/vector-icons';
 const DiagnosisScreen = () => {
-  const { image, setImage, } =
-    useContext(PermissionsContext);
+  const { image, setImage } = useContext(PermissionsContext);
 
   return (
     <BaseScreen>

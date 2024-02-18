@@ -9,12 +9,13 @@ import { WelcomeSvg } from '../constants/svg';
 import { Ionicons } from '@expo/vector-icons';
 import { useContext } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
-import ImageContext from "../context/ImageContext";
+import ImageContext from '../context/ImageContext';
 
 const ScanPhotoScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
 
-  const { permissions, lastPressed, setLastPressed } = useContext(PermissionsContext);
+  const { permissions, lastPressed, setLastPressed } =
+    useContext(PermissionsContext);
 
   const { captureImage } = useContext(ImageContext);
 
@@ -56,16 +57,12 @@ const ScanPhotoScreen = ({ navigation }) => {
             },
           ]}
         >
-          <Text
-            style={[
-              basicStyles.FONTPRIMARY,
-              { fontSize: 35 },
-            ]}
-          >
+          <Text style={[basicStyles.FONTPRIMARY, { fontSize: 35 }]}>
             Let's start
           </Text>
           <Text
-            style={[basicStyles.FONT16,
+            style={[
+              basicStyles.FONT16,
               !permissions.camera && !permissions.gallery
                 ? { color: 'red' }
                 : {},
