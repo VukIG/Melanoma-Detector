@@ -48,6 +48,8 @@ export const PermissionProvider = ({ children }) => {
         grantPermission,
         errors,
         setErrors,
+        lastPressed,
+        setLastPressed
       }}
     >
       {children}

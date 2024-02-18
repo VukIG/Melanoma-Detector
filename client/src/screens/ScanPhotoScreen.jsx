@@ -7,7 +7,7 @@ import { SecondaryButton } from '../components/button/SecondaryButton';
 import { ProgressStepBar } from '../components/ProgressStepBar';
 import { WelcomeSvg } from '../constants/svg';
 import { Ionicons } from '@expo/vector-icons';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
 import ImageContext from "../context/ImageContext";
 
@@ -59,13 +59,13 @@ const ScanPhotoScreen = ({ navigation }) => {
           <Text
             style={[
               basicStyles.FONTPRIMARY,
-              { fontWeight: 'bold', fontSize: 35 },
+              { fontSize: 35 },
             ]}
           >
             Let's start
           </Text>
           <Text
-            style={[
+            style={[basicStyles.FONT16,
               !permissions.camera && !permissions.gallery
                 ? { color: 'red' }
                 : {},
@@ -85,21 +85,22 @@ const ScanPhotoScreen = ({ navigation }) => {
         >
           <PrimaryButton
             title={'Take a picture'}
-            icon={<Ionicons name="camera-outline" size={24} color="white" />}
+            icon={<Ionicons name="camera-outline" size={30} color="white" />}
             onPress={() => {
               captureImage(true);
               setLastPressed('camera');
+              navigation.navigate('FormScreen');
             }}
           />
           <SecondaryButton
             title={'Upload from gallery'}
             icon={
-              <Ionicons name="image-outline" size={24} color="rgb(0,179,255)" />
+              <Ionicons name="image-outline" size={30} color="rgb(0,179,255)" />
             }
-            style={{ height: 30, width: 'auto' }}
             onPress={() => {
               captureImage(false);
               setLastPressed('gallery');
+              navigation.navigate('FormScreen');
             }}
           />
         </View>

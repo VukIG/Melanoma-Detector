@@ -5,6 +5,7 @@ import MainNavigator from './src/navigation/MainNavigator';
 import { PermissionProvider } from './src/context/PermissionsContext';
 import { ImageProvider } from './src/context/ImageContext';
 
+
 export default function App() {
   return (
     <PermissionProvider>

@@ -26,7 +26,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
           style={{
             width: '100%',
             height: '70%',
-            transform: [{ translateX: 35 }, { translateY: 100 }],
+            transform: [{ translateX: 35 }, { translateY: 90 }],
           }}
         >
           <AllowCamera width={'100%'} height={'60%'} />
@@ -34,27 +34,29 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
         <Text
           style={[
             basicStyles.FONTPRIMARY,
-            { fontSize: 40, textAlign: 'center', marginTop: -90 },
+            { fontSize: 40, textAlign: 'center', marginTop: -120 },
           ]}
         >
           Allow your camera
         </Text>
-        <View style={[basicStyles.CENTER_COL, { width: '70%', flex: 1 }]}>
+        <View style={[basicStyles.CENTER_COL, { width: '90%', flex: 1 }]}>
           <Text style={[basicStyles.FONT16, { marginBottom: 20 }]}>
             We need an image of your mole. Please grant us the permission to
             access your camera in order to take the image.
           </Text>
-          <PrimaryButton
-            title={'Enable Camera'}
-            onPress={() => {
-              grantPermission(true);
-              navigation.navigate('GrantGalleryPermissionScreen');
-            }}
-          />
-          <SecondaryButton
-            title={'Not now'}
-            onPress={() => navigation.navigate('GrantGalleryPermissionScreen')}
-          />
+          <View style={{ width: '100%' }}>
+            <PrimaryButton
+              title={'Enable Camera'}
+              onPress={() => {
+                grantPermission(true);
+                navigation.navigate('GrantGalleryPermissionScreen');
+              }}
+            />
+            <SecondaryButton
+              title={'Not now'}
+              onPress={() => navigation.navigate('GrantGalleryPermissionScreen')}
+            />
+          </View>
         </View>
         <ProgressStepBar currentStepIndex={1} />
       </View>

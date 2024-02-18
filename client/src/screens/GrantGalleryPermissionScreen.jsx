@@ -33,13 +33,13 @@ const GrantGalleryPermissionScreen = ({ navigation }) => {
         <Text
           style={[
             basicStyles.FONTPRIMARY,
-            { fontSize: 40, textAlign: 'center', marginTop: -130 },
+            { fontSize: 34, textAlign: 'center', marginTop: -130 },
           ]}
         >
           Grant gallery access
         </Text>
         <View
-          style={[basicStyles.CENTER_COL, { width: '70%', flex: 1, gap: 20 }]}
+          style={[basicStyles.CENTER_COL, { width: '80%', flex: 1, gap: 70 }]}
         >
           <Text style={[basicStyles.FONT16]}>
             We need an image of your mole. Please grant us the permission to

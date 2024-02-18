@@ -8,6 +8,7 @@ const ImageContext = createContext();
 
 export const ImageProvider = ({ children }) => {
     const [image, setImage] = useState('');
+    const [imgUri, setImgUri] = useState('');
     const { permissions } =
     useContext(PermissionsContext);
 
@@ -37,7 +38,8 @@ export const ImageProvider = ({ children }) => {
     
           if (!result.canceled && result.assets && result.assets.length > 0) {
             setImage(result.assets[0].base64);
-            sendImage();
+            setImgUri(result.assets[0].uri);
+            //sendImage();
           }
         } else {
           setErrors((prevState) => ({
@@ -77,6 +79,8 @@ export const ImageProvider = ({ children }) => {
                 image,
                 setImage,
                 captureImage,
+                imgUri,
+                setImgUri
             }}
         >
             {children}

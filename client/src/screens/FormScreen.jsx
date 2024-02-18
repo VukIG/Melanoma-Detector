@@ -2,62 +2,47 @@ import { View, Text, Image, Input } from 'react-native';
 import { BaseScreen } from '../components/common/BaseScreen';
 import { useContext } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
+import ImageContext from '../context/ImageContext';
 import PrimaryButton from '../components/button/PrimaryButton';
 import SecondaryButton from '../components/button/SecondaryButton';
 import { Ionicons } from '@expo/vector-icons';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
-const DiagnosisScreen = ({ navigation }) => {
-  const { image, setImage, lastPressed } =
+import { InputNumber } from '../components/input/InputNumber';
+import { InputCheckbox } from '../components/input/InputCheckbox' ;
+import { scale, scaleVertical,scaleImage } from '../helpers/scale';
+
+
+const FormScreen = ({ navigation }) => {
+  const { lastPressed } =
     useContext(PermissionsContext);
+  const { imgUri } = useContext(ImageContext);
+    console.log(imgUri);
     const basicStyles = useGlobalStyle();
-  return (
-    <BaseScreen>
-      <View>
-        <Image uri={image} />
-        <View>
-          <Text style={[
-            basicStyles.FONTPRIMARY, basicStyles.FONT32
-          ]}>Enter your personal info:</Text>
-        </View>
-        <View>
-            <Input:number placeholder="">
-            
-            </Input:number>
 
-            <Input:checkbox>
-            
-            </Input:checkbox>
+    const { width: scaledWidth, height: scaledHeight } = scaleImage(100, 100, 340);
 
-            <Input:checkbox>
-            
-            </Input:checkbox>
-        </View>
-        <View>
-          { lastPressed? <PrimaryButton
-            title={'Re-take a picture'}
-            icon={<Ionicons name="camera-outline" size={24} color="white" />}
-            onPress={() => captureImage(true)}
-            //make sure to cover ther SRBIJA case if the user didn't grant perm
-          />
-          :
-          <SecondaryButton
-            title={'Re-upload an image'}
-            icon={
-              <Ionicons name="image-outline" size={24} color="rgb(0,179,255)" />
-            }
-            style={{ height: 30, width: 'auto' }}
-            onPress={() => captureImage(false)}
-          />}
-          <PrimaryButton 
-            title={'Send'}
-            onPress={()=> navigation.navigate("DiagnosisScreen")}
-          />
-            
+    return (
+      <BaseScreen>
+        <View style={{margin:4}}>
+          <Image style={[ basicStyles.CENTER_COL, {
+            width:scaledWidth,
+            height:scaledHeight, 
+            backgroundColor:"black",
+            marginTop: 20,
+            marginBottom:20,
+          
+          }]} source={{ uri: imgUri}} />
+          <View>
+            <Text style={[
+              basicStyles.FONTPRIMARY, basicStyles.FONT32, { fontWeight: "bold"}
+            ]}>Enter your personal info:</Text>
+          </View>
+          
+          
           
         </View>
-      </View>
-    </BaseScreen>
-  );
+      </BaseScreen>
+    );
 };
 
-export default DiagnosisScreen;
+export default FormScreen;

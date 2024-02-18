@@ -37,14 +37,6 @@ def process_image(image_bytes: bytes):
         print(f"Error processing image: {e}")
         return None
 
-API_URL = "https://api-inference.huggingface.co/models/milutinNemanjic/Melanoma-detection-model"
-headers = {"Authorization": f"Bearer {API_TOKEN}"}
-
-def query(filename):
-    with open(filename, "rb") as f:
-        data = f.read()
-    response = requests.post(API_URL, headers=headers, data=data)
-    return response.json()
 
 @app.get('/')
 def index():

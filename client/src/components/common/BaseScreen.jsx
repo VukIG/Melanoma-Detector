@@ -1,12 +1,14 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Text } from 'react-native';
 import { Image } from 'expo-image';
 import PropTypes from 'prop-types';
 
 import { scale, scaleVertical } from '@helpers/scale';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
 import { colors } from '../../constants/color';
+import { useFonts } from "expo-font";
+import { Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 
 export const BaseScreen = ({
   contentStyle,
@@ -19,7 +21,16 @@ export const BaseScreen = ({
 }) => {
   const basicStyles = useGlobalStyle();
 
+  const [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+  });
+
   const BaseComponent = fill ? View : SafeAreaView;
+
+  if (!fontsLoaded) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <BaseComponent
       style={[
