@@ -11,7 +11,7 @@ export const SecondaryButton = ({ title, icon, style, onPress }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[
+      style={[ 
         {
           textAlign: 'center',
           paddingHorizontal: scale(12),
@@ -24,7 +24,7 @@ export const SecondaryButton = ({ title, icon, style, onPress }) => {
         },
       ]}
     >
-      <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
+      <View style={[style,{ flexDirection: 'row', alignItems: 'center', gap: 10 }]}>
         <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY, { width:"100%"}]}>
           {title}
         </Text>

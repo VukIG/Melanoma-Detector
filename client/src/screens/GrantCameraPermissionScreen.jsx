@@ -53,6 +53,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
               }}
             />
             <SecondaryButton
+              style={{ marginLeft:30 }}
               title={'Not now'}
               onPress={() => navigation.navigate('GrantGalleryPermissionScreen')}
             />

@@ -34,7 +34,7 @@ const FormScreen = ({ navigation }) => {
           }]} source={{ uri: imgUri}} />
           <View>
             <Text style={[
-              basicStyles.FONTPRIMARY, basicStyles.FONT32, { fontWeight: "bold"}
+              basicStyles.FONTPRIMARY, basicStyles.FONT28
             ]}>Enter your personal info:</Text>
           </View>
           

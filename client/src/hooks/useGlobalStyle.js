@@ -95,6 +95,11 @@ export const useGlobalStyle = () => {
       fontStyle: 'normal',
       fontFamily: "Montserrat_400Regular"
     },
+    FONT28: {
+      fontSize: scale(28),
+      fontStyle: 'normal',
+      fontFamily: "Montserrat_400Regular"
+    },
     FONT16: {
       fontSize: scale(16),
       fontStyle: 'normal',
