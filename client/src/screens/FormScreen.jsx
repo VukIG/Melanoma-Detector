@@ -16,7 +16,6 @@ const FormScreen = ({ navigation }) => {
   const { lastPressed } =
     useContext(PermissionsContext);
   const { imgUri } = useContext(ImageContext);
-    console.log(imgUri);
     const basicStyles = useGlobalStyle();
 
     const { width: scaledWidth, height: scaledHeight } = scaleImage(100, 100, 340);
@@ -37,7 +36,10 @@ const FormScreen = ({ navigation }) => {
               basicStyles.FONTPRIMARY, basicStyles.FONT28
             ]}>Enter your personal info:</Text>
           </View>
-          
+          <View>
+            <InputCheckbox>
+            </InputCheckbox>
+          </View>
           
           
         </View>
