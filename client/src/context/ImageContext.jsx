@@ -13,7 +13,6 @@ export const ImageProvider = ({ children }) => {
 
   const captureImage = async (isCamera) => {
     const permission = isCamera ? permissions.camera : permissions.gallery;
-    const errorKey = isCamera ? 'camera' : 'gallery';
 
     if (permission === true) {
       let result;
@@ -40,33 +39,6 @@ export const ImageProvider = ({ children }) => {
         setImgUri(result.assets[0].uri);
         //sendImage();
       }
-    } else {
-      setErrors((prevState) => ({
-        ...prevState,
-        [errorKey]: true,
-      }));
-    }
-  };
-
-  const sendImage = async (base64Image) => {
-    try {
-      const formData = new FormData();
-      formData.append('image', base64Image);
-
-      fetch('https://mda-server-api.onrender.com/predict', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return res.json();
-        })
-        .then((data) => console.log(data.message))
-        .catch((error) => console.error('Error:', error));
-    } catch (error) {
-      console.error('Error uploading image:', error);
     }
   };
 
