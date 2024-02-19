@@ -20,14 +20,12 @@ export const FormProvider = ({ children }) => {
   const sendData = async () => {
     try {
       const formData = new FormData();
-      formData.append({
-        image: image,
-        age: age,
-        gender: gender,
-        location: location,
-      });
-      fetch('https://mda-server-api.onrender.com/', {
-        method: 'GET',
+      formData.append(
+        "image", image
+      );
+      fetch('https://mda-server-api.onrender.com/predict', {
+        method: 'POST',
+        body: formData
       })
         .then((res) => {
           if (!res.ok) {
@@ -35,7 +33,7 @@ export const FormProvider = ({ children }) => {
           }
           return res.json();
         })
-        .then((data) => console.log(data.message))
+        .then((data) => console.log(data))
         .catch((error) => console.error('Error:', error));
     } catch (error) {
       console.error('Error uploading image:', error);
