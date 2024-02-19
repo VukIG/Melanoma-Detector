@@ -38,9 +38,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class FormData(BaseModel):
-    img: Optional[str] = None
-
 def base64_to_numpy(base64_string):
     if base64_string.startswith('data:image/png;base64,'):
         base64_string = base64_string[len('data:image/png;base64,'):]
@@ -50,6 +47,6 @@ def base64_to_numpy(base64_string):
     return image_np
 
 @app.post('/predict')
-def predict(formData: FormData):
-    image_array = base64_to_numpy(formData.img)
+def predict(img: str):
+    image_array = base64_to_numpy(img)
     return { "message " : image_array}

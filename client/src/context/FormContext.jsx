@@ -21,7 +21,7 @@ export const FormProvider = ({ children }) => {
     try {
       const formData = new FormData();
       formData.append(
-        "image", image
+        image
       );
       fetch('https://mda-server-api.onrender.com/predict', {
         method: 'POST',
