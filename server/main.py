@@ -1,17 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from io import BytesIO
-from pydantic import BaseModel
-from PIL import Image
-import numpy as np
-import base64
-import io
-import requests #pip installation required + add the version to requirements.txt
+#pip installation required + add the version to requirements.txt
 
 app = FastAPI()
-
-class PatientInfo(BaseModel):
-    image: str
 
 #CORS ERRORI SKINUTI
 
@@ -25,19 +16,6 @@ app.add_middleware(
 
 
 # Load your cancer detection model only once when the app starts
-
-
-def process_image(image_bytes: bytes):
-    try:
-        img_file = BytesIO(image_bytes)
-        img = Image.open(img_file) #potenciajlni bug
-        img_input = np.reshape(img, (1, img.shape[0], img.shape[1], img.shape[2]))
-        return img_input
-    except Exception as e:
-        print(f"Error processing image: {e}")
-        return None
-
-
 @app.get('/')
 def index():
     return {'message': 'Amenelibockura'}
