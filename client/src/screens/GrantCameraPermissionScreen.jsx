@@ -26,7 +26,7 @@ const GrantCameraPermissionScreen = ({ navigation }) => {
           style={{
             width: '100%',
             height: '70%',
-            transform: [{ translateX: 35 }, { translateY: 90 }],
+            transform: [{ translateX: 35 }, { translateY: 50 }],
           }}
         >
           <AllowCamera width={'100%'} height={'60%'} />

@@ -1,21 +1,21 @@
 import { View, Text, Image } from 'react-native';
 import { BaseScreen } from '../components/common/BaseScreen';
 import { useContext, useState } from 'react';
-import PermissionsContext from '../context/PermissionsContext';
-import ImageContext from '../context/ImageContext';
-import PrimaryButton from '../components/button/PrimaryButton';
-import SecondaryButton from '../components/button/SecondaryButton';
+import { PrimaryButton } from '../components/button/PrimaryButton';
+import { SecondaryButton } from '../components/button/SecondaryButton';
 import { Ionicons } from '@expo/vector-icons';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
-import Input from '../components/input/Input';
 import { scale, scaleVertical, scaleImage } from '../helpers/scale';
+import PermissionsContext from '../context/PermissionsContext';
+import ImageContext from '../context/ImageContext';
+import Input from '../components/input/Input';
 import Checkbox from '../components/input/Checkbox';
 
 const FormScreen = ({ navigation }) => {
   const [age, setAge] = useState();
-  const [gender, setGender] = useState({ male: false, female: false});
+  const [gender, setGender] = useState({ male: false, female: false });
   const { lastPressed } = useContext(PermissionsContext);
-  const { imgUri } = useContext(ImageContext);
+  const { imgUri, captureImage, image } = useContext(ImageContext);
   const basicStyles = useGlobalStyle();
 
   const { width: scaledWidth, height: scaledHeight } = scaleImage(
@@ -23,6 +23,9 @@ const FormScreen = ({ navigation }) => {
     100,
     340,
   );
+
+  // console.log('image uri****: ', imgUri);
+  // console.log('base64****: ', image);
 
   return (
     <BaseScreen>

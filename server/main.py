@@ -42,10 +42,10 @@ def process_image(image_bytes: bytes):
 def index():
     return {'message': 'Amenelibockura'}
 
-@app.get('/predict')
+@app.post('/predict')
 async def predict(photo: dict):
     try:
-        print("File content: ", photo["image"]["_parts"][0][1]["uri"])
+        print("File content: ", photo)
         base64FromUser = photo["image"]["_parts"][0][1]["base64"]
 
         tempImg = None
@@ -54,9 +54,9 @@ async def predict(photo: dict):
             # tempImg = base64.b64decode(base64FromUser)  # actual image
             file.write(base64.b64decode(base64FromUser))  # creating a new file and saving it to current directory
         
-        print("tempImg: ", tempImg)
+        # print("tempImg: ", tempImg)
 
-        if not photo["image"]["_parts"][0][1]["uri"]:
+        if not photo["image"]["_parts"][0][1]["base64"]:
             return {"msg": "Failed to upload image to the server...", "status": 400}
 
         return {"msg": "Image received!", "status": 200}

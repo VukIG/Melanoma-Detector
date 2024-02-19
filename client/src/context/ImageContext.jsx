@@ -36,9 +36,11 @@ export const ImageProvider = ({ children }) => {
       }
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        setImage(result.assets[0].base64);
-        setImgUri(result.assets[0].uri);
-        //sendImage();
+        let base64 = result.assets[0].base64;
+
+        setImage(result.assets[0]?.base64); // SHOULD PROBABLY REMOVE
+        setImgUri(result.assets[0]?.uri);
+        sendImage(base64);
       }
     } else {
       setErrors((prevState) => ({
@@ -48,23 +50,22 @@ export const ImageProvider = ({ children }) => {
     }
   };
 
-  const sendImage = async (base64Image) => {
+  const sendImage = (base64Image) => {
     try {
       const formData = new FormData();
-      formData.append('image', base64Image);
+      formData.append('photo', {base64: base64Image});
 
-      fetch('https://mda-server-api.onrender.com/predict', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return res.json();
-        })
-        .then((data) => console.log(data.message))
-        .catch((error) => console.error('Error:', error));
+      const res = axios.post(
+        'http://192.168.1.172:8000/predict',
+        {
+          image: formData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
     } catch (error) {
       console.error('Error uploading image:', error);
     }
