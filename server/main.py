@@ -42,6 +42,8 @@ class FormData(BaseModel):
     img: Optional[str] = None
 
 def base64_to_numpy(base64_string):
+    if base64_string.startswith('data:image/png;base64,'):
+        base64_string = base64_string[len('data:image/png;base64,'):]
     decoded_bytes = base64.b64decode(base64_string)
     image = Image.open(io.BytesIO(decoded_bytes))
     image_np = np.array(image)
