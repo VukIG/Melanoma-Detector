@@ -6,6 +6,7 @@ const FormContext = createContext();
 export const FormProvider = ({ children }) => {
   const [age, setAge] = useState();
   const [gender, setGender] = useState({ male: false, female: false });
+  const [locVal, setLocVal] = useState(null);
   const [location, setLocation] = useState([
     { label: 'Abdomen ', value: 'abdomen' },
     { label: 'Back', value: 'back' },
@@ -25,9 +26,8 @@ export const FormProvider = ({ children }) => {
         gender: gender,
         location: location,
       });
-      fetch('https://mda-server-api.onrender.com/predict', {
-        method: 'POST',
-        body: formData,
+      fetch('https://mda-server-api.onrender.com/', {
+        method: 'GET',
       })
         .then((res) => {
           if (!res.ok) {
@@ -51,6 +51,8 @@ export const FormProvider = ({ children }) => {
         location,
         setLocation,
         sendData,
+        locVal,
+        setLocVal,
       }}
     >
       {children}

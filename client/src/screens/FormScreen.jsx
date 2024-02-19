@@ -19,7 +19,7 @@ const FormScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
   const { lastPressed, setLastPressed } = useContext(PermissionsContext);
   const { imgUri } = useContext(ImageContext);
-  const { age, setAge, gender, setGender, location, setLocation } =
+  const { age, setAge, gender, setGender, location, setLocation, sendData } =
     useContext(FormContext);
   console.log(lastPressed);
 
@@ -66,7 +66,10 @@ const FormScreen = ({ navigation }) => {
             <Slider items={location} setItems={setLocation} />
             <PrimaryButton
               title={'Send'}
-              onPress={() => navigation.navigate('DiagnosisScreen')}
+              onPress={() => {
+                sendData();
+                navigation.navigate('DiagnosisScreen');
+              }}
             />
           </View>
         </View>

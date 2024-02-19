@@ -1,11 +1,12 @@
 import { View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import FormContext from '../../context/FormContext';
 
 const Slider = ({ items, setItems }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const { locVal, setLocVal } = useContext(FormContext);
 
   const basicStyles = useGlobalStyle();
   return (
@@ -13,10 +14,10 @@ const Slider = ({ items, setItems }) => {
       <DropDownPicker
         style={[basicStyles.FONTBLACK, { backgroundColor: 'transparent' }]}
         open={open}
-        value={value}
+        value={locVal}
         items={items}
         setOpen={setOpen}
-        setValue={setValue}
+        setValue={setLocVal}
         setItems={setItems}
         placeholder={'Choose the location of the mole'}
       />

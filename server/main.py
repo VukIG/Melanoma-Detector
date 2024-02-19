@@ -41,25 +41,3 @@ def process_image(image_bytes: bytes):
 @app.get('/')
 def index():
     return {'message': 'Amenelibockura'}
-
-@app.get('/predict')
-async def predict(photo: dict):
-    try:
-        print("File content: ", photo["image"]["_parts"][0][1]["uri"])
-        base64FromUser = photo["image"]["_parts"][0][1]["base64"]
-
-        tempImg = None
-
-        with open("tempImgToSave.jpg", "wb") as file:
-            # tempImg = base64.b64decode(base64FromUser)  # actual image
-            file.write(base64.b64decode(base64FromUser))  # creating a new file and saving it to current directory
-        
-        print("tempImg: ", tempImg)
-
-        if not photo["image"]["_parts"][0][1]["uri"]:
-            return {"msg": "Failed to upload image to the server...", "status": 400}
-
-        return {"msg": "Image received!", "status": 200}
-
-    except Exception as e:
-        print("Error receiving image:", e)
