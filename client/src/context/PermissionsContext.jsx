@@ -4,18 +4,11 @@ import * as ImagePicker from 'expo-image-picker';
 const PermissionsContext = createContext();
 
 export const PermissionProvider = ({ children }) => {
-
   const [lastPressed, setLastPressed] = useState('none');
 
-  
   const [permissions, setPermissions] = useState({
     camera: false,
     gallery: false,
-  });
-
-  const [errors, setErrors] = useState({
-    cameraDenied: false,
-    galleryDenied: false,
   });
 
   const grantPermission = async (isCamera) => {
@@ -38,6 +31,10 @@ export const PermissionProvider = ({ children }) => {
         [keyValue]: false,
       }));
     }
+    setLastPressed((prev) => ({
+      ...prev,
+      [keyValue]: true,
+    }));
   };
 
   return (
@@ -46,10 +43,8 @@ export const PermissionProvider = ({ children }) => {
         permissions,
         setPermissions,
         grantPermission,
-        errors,
-        setErrors,
         lastPressed,
-        setLastPressed
+        setLastPressed,
       }}
     >
       {children}

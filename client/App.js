@@ -4,15 +4,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MainNavigator from './src/navigation/MainNavigator';
 import { PermissionProvider } from './src/context/PermissionsContext';
 import { ImageProvider } from './src/context/ImageContext';
-
+import { FormProvider } from './src/context/FormContext';
 
 export default function App() {
   return (
     <PermissionProvider>
       <ImageProvider>
-        <SafeAreaProvider>
-          <MainNavigator />
-        </SafeAreaProvider>
+        <FormProvider>
+          <SafeAreaProvider>
+            <MainNavigator />
+          </SafeAreaProvider>
+        </FormProvider>
       </ImageProvider>
     </PermissionProvider>
   );
