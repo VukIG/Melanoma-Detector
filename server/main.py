@@ -45,16 +45,16 @@ def index():
 @app.post('/predict')
 async def predict(photo: dict):
     try:
-        print("File content: ", photo)
         base64FromUser = photo["image"]["_parts"][0][1]["base64"]
 
         tempImg = None
 
         with open("tempImgToSave.jpg", "wb") as file:
-            # tempImg = base64.b64decode(base64FromUser)  # actual image
+            tempImg = base64.b64decode(base64FromUser)  # actual image in bytes
             file.write(base64.b64decode(base64FromUser))  # creating a new file and saving it to current directory
         
         # print("tempImg: ", tempImg)
+        image_to_array(tempImg, 600, 600)   # change to whatever width and height of image that is necessary
 
         if not photo["image"]["_parts"][0][1]["base64"]:
             return {"msg": "Failed to upload image to the server...", "status": 400}
@@ -63,3 +63,20 @@ async def predict(photo: dict):
 
     except Exception as e:
         print("Error receiving image:", e)
+
+def image_to_array(img, width, height):
+    image = Image.open("tempImgToSave.jpg")
+    
+    # image_grayscale = image.convert("L")
+
+    # resized_image = image_grayscale.resize((width, height))
+
+    resized_image = image.resize((width, height))   # probably want to keep original image color
+
+    image_array = np.array(resized_image)
+
+    normalized_image = image_array / 255.0  # value depends on the pixel value range
+
+    print(normalized_image)
+
+    
