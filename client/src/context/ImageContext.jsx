@@ -66,6 +66,8 @@ export const ImageProvider = ({ children }) => {
           },
         },
       );
+      
+      console.log(res);
     } catch (error) {
       console.error('Error uploading image:', error);
     }
