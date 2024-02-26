@@ -45,14 +45,6 @@ def read_root():
 
 
 @app.post('/predict')
-<<<<<<< Updated upstream
-def predict(img: str):
-    convImg = base64_to_numpy(img)
-    if convImg is None:
-        return {"cihan": "FAIL"}
-    else:
-        return { "message" : convImg.tolist()}
-=======
 async def predict(photo: dict):
     try:
         base64FromUser = photo["image"]["_parts"][0][1]["base64"]
@@ -76,12 +68,12 @@ async def predict(photo: dict):
 
 def image_to_array(img, width, height):
     image = Image.open("tempImgToSave.jpg")
+    
+    # image_grayscale = image.convert("L")
 
-    # the bottom code grayscales the image, so if color is important, omit this    
-    # image_grayscale = image.convert("L") 
     # resized_image = image_grayscale.resize((width, height))
 
-    resized_image = image.resize((width, height)) 
+    resized_image = image.resize((width, height))   # probably want to keep original image color
 
     image_array = np.array(resized_image)
 
@@ -90,4 +82,3 @@ def image_to_array(img, width, height):
     print(normalized_image)
 
     
->>>>>>> Stashed changes

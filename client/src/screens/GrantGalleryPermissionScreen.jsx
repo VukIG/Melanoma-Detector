@@ -25,7 +25,7 @@ const GrantGalleryPermissionScreen = ({ navigation }) => {
           style={{
             width: '100%',
             height: '70%',
-            transform: [{ translateX: 35 }, { translateY: 80 }],
+            transform: [{ translateX: 35 }, { translateY: 50 }],
           }}
         >
           <AllowGallery width={'100%'} height={'60%'} />
