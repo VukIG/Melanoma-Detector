@@ -13,7 +13,6 @@ export const ImageProvider = ({ children }) => {
 
   const captureImage = async (isCamera) => {
     const permission = isCamera ? permissions.camera : permissions.gallery;
-    const errorKey = isCamera ? 'camera' : 'gallery';
 
     if (permission === true) {
       let result;

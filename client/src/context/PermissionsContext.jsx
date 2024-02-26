@@ -11,11 +11,6 @@ export const PermissionProvider = ({ children }) => {
     gallery: false,
   });
 
-  const [errors, setErrors] = useState({
-    cameraDenied: false,
-    galleryDenied: false,
-  });
-
   const grantPermission = async (isCamera) => {
     const keyValue = isCamera ? 'camera' : 'gallery';
     let optionStatus;
@@ -36,6 +31,10 @@ export const PermissionProvider = ({ children }) => {
         [keyValue]: false,
       }));
     }
+    setLastPressed((prev) => ({
+      ...prev,
+      [keyValue]: true,
+    }));
   };
 
   return (
@@ -44,8 +43,6 @@ export const PermissionProvider = ({ children }) => {
         permissions,
         setPermissions,
         grantPermission,
-        errors,
-        setErrors,
         lastPressed,
         setLastPressed,
       }}
