@@ -9,23 +9,21 @@ import { PrimaryButton } from '../components/button/PrimaryButton';
 import { SecondaryButton } from '../components/button/SecondaryButton';
 import { Ionicons } from '@expo/vector-icons';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
-import { scale, scaleVertical, scaleImage } from '../helpers/scale';
+import { scaleImage } from '../helpers/scale';
 
-import PermissionsContext from '../context/PermissionsContext';
-import ImageContext from '../context/ImageContext';
 import Input from '../components/input/Input';
 import Checkbox from '../components/input/Checkbox';
 import Slider from '../components/input/Slider';
-import Input from '../components/input/Input';
 
 const FormScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
-  const [gender, setGender] = useState({ male: false, female: false });
   const { lastPressed, setLastPressed } = useContext(PermissionsContext);
   const { imgUri, captureImage, image } = useContext(ImageContext);
   const { age, setAge, gender, setGender, location, setLocation, sendData } =
     useContext(FormContext);
+
   console.log(lastPressed);
+
   const { width: scaledWidth, height: scaledHeight } = scaleImage(
     100,
     100,
@@ -73,7 +71,7 @@ const FormScreen = ({ navigation }) => {
             <PrimaryButton
               title={'Send'}
               onPress={() => {
-                sendData();
+                sendData(image);
                 navigation.navigate('DiagnosisScreen');
               }}
             />

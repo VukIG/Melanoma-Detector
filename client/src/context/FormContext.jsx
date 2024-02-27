@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from 'react';
-import ImageContext from './ImageContext';
 
 const FormContext = createContext();
 
@@ -15,30 +14,33 @@ export const FormProvider = ({ children }) => {
     { label: 'Lower extremity', value: 'lower extremity' },
   ]);
 
-  const { image } = useContext(ImageContext);
-
-  const sendData = async () => {
+  const sendData = (image) => {
     try {
       const formData = new FormData();
-      formData.append(
-        image
+      formData.append('age', age);
+      formData.append('gender', gender);
+      formData.append('localization', locVal);
+
+      formData.append('photo', { base64: base64Image });
+
+      const res = axios.post(
+        'http://192.168.1.172:8000/predict',
+        {
+          form: formData, //CRITICAL CHANGED IMAGE TO FORM
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       );
-      fetch('https://mda-server-api.onrender.com/predict', {
-        method: 'POST',
-        body: formData
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return res.json();
-        })
-        .then((data) => console.log(data))
-        .catch((error) => console.error('Error:', error));
+
+      console.log(res);
     } catch (error) {
       console.error('Error uploading image:', error);
     }
   };
+
   return (
     <FormContext.Provider
       value={{

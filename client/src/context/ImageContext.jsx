@@ -35,40 +35,14 @@ export const ImageProvider = ({ children }) => {
       }
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        let base64 = result.assets[0].base64;
-
         setImage(result.assets[0]?.base64); // SHOULD PROBABLY REMOVE
         setImgUri(result.assets[0]?.uri);
-        sendImage(base64);
       }
     } else {
       setErrors((prevState) => ({
         ...prevState,
         [errorKey]: true,
       }));
-    }
-  };
-
-  const sendImage = (base64Image) => {
-    try {
-      const formData = new FormData();
-      formData.append('photo', {base64: base64Image});
-
-      const res = axios.post(
-        'http://192.168.1.172:8000/predict',
-        {
-          image: formData,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      
-      console.log(res);
-    } catch (error) {
-      console.error('Error uploading image:', error);
     }
   };
 
