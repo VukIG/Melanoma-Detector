@@ -1,8 +1,12 @@
+import ImageContext from './ImageContext';
 import { createContext, useContext, useState } from 'react';
 
 const FormContext = createContext();
 
 export const FormProvider = ({ children }) => {
+
+  const { setImage } = useContext(ImageContext);
+
   const [age, setAge] = useState();
   const [gender, setGender] = useState({ male: false, female: false });
   const [locVal, setLocVal] = useState(null);
@@ -14,14 +18,16 @@ export const FormProvider = ({ children }) => {
     { label: 'Lower extremity', value: 'lower extremity' },
   ]);
 
-  const sendData = (image) => {
+  const sendData = () => {
     try {
       const formData = new FormData();
       formData.append('age', age);
       formData.append('gender', gender);
       formData.append('localization', locVal);
 
-      formData.append('photo', { base64: base64Image });
+      formData.append('photo', { base64: setImage });
+      
+      console.log(formData);
 
       const res = axios.post(
         'http://192.168.1.172:8000/predict',

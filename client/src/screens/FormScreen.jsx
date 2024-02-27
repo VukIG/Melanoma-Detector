@@ -18,8 +18,9 @@ import Slider from '../components/input/Slider';
 const FormScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
   const { lastPressed, setLastPressed } = useContext(PermissionsContext);
-  const { imgUri, captureImage, image } = useContext(ImageContext);
-  const { age, setAge, gender, setGender, location, setLocation, sendData } =
+  const { imgUri, image } = useContext(ImageContext);
+  const { age, setAge, gender, setGender, location, setLocation, 
+  sendData, locVal, setLocVal } =
     useContext(FormContext);
 
   console.log(lastPressed);
@@ -67,11 +68,16 @@ const FormScreen = ({ navigation }) => {
               setState={setAge}
             />
             <Checkbox gender={gender} setGender={setGender} />
-            <Slider items={location} setItems={setLocation} />
+            <Slider 
+              items={location} 
+              setItems={setLocation} 
+              locVal={locVal} 
+              setLocVal={setLocVal} 
+            />
             <PrimaryButton
               title={'Send'}
               onPress={() => {
-                sendData(image);
+                sendData();
                 navigation.navigate('DiagnosisScreen');
               }}
             />
