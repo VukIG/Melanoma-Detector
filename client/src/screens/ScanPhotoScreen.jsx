@@ -1,65 +1,38 @@
 import { View, Text } from 'react-native';
 import { BaseScreen } from '../components/common/BaseScreen';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
-import { scale, scaleVertical } from '../helpers/scale';
+import { scaleVertical } from '../helpers/scale';
 import { PrimaryButton } from '../components/button/PrimaryButton';
 import { SecondaryButton } from '../components/button/SecondaryButton';
 import { ProgressStepBar } from '../components/ProgressStepBar';
 import { WelcomeSvg } from '../constants/svg';
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
+import ImageContext from '../context/ImageContext';
 
 const ScanPhotoScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
 
-  const [errors, setErrors] = useState({
-    cameraDenied: false,
-    galleryDenied: false,
-  });
+  const { permissions, lastPressed, setLastPressed } =
+    useContext(PermissionsContext);
 
-  const {
-    cameraPermission,
-    setCameraPermission,
-    galleryPermission,
-    setGalleryPermission,
-    setImage,
-  } = useContext(PermissionsContext);
+  const { captureImage } = useContext(ImageContext);
 
-  async function captureImage(isCamera) {
-    const permission = isCamera ? cameraPermission : galleryPermission;
-    const setPermission = isCamera ? setCameraPermission : setGalleryPermission;
-    const errorKey = isCamera ? 'camera' : 'gallery';
+  const promptUser = () => {
+    let prompt;
 
-    if (permission === true) {
-      let result;
-      if (isCamera) {
-        result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-        });
-      } else {
-        result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-        });
-      }
-
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        setImage(result.assets[0].uri);
-      }
+    if (!permissions.camera == true && lastPressed == 'camera') {
+      prompt = 'Please make sure that you granted the app camera rights';
+    } else if (!permissions.gallery == true && lastPressed == 'gallery') {
+      prompt =
+        'Please make sure to grant the app access to the photos of your gallery';
     } else {
-      setErrors((prevState) => ({
-        ...prevState,
-        [errorKey]: true,
-      }));
+      prompt =
+        'Upload a picture of your naveus from the gallery, or take a picture of it with your camera';
     }
-  }
+    return prompt;
+  };
 
   return (
     <BaseScreen>
@@ -84,17 +57,19 @@ const ScanPhotoScreen = ({ navigation }) => {
             },
           ]}
         >
-          <Text
-            style={[
-              basicStyles.FONTPRIMARY,
-              { fontWeight: 'bold', fontSize: 35 },
-            ]}
-          >
+          <Text style={[basicStyles.FONTPRIMARY, { fontSize: 35 }]}>
             Let's start
           </Text>
-          <Text style={{ textAlign: 'center', fontSize: 17 }}>
-            Upload a picture of your naveus from the gallery, or take a picture
-            of it with your camera
+          <Text
+            style={[
+              basicStyles.FONT16,
+              !permissions.camera && !permissions.gallery
+                ? { color: 'red' }
+                : {},
+              { textAlign: 'center', fontSize: 17 },
+            ]}
+          >
+            {promptUser()}
           </Text>
         </View>
         <View
@@ -107,16 +82,23 @@ const ScanPhotoScreen = ({ navigation }) => {
         >
           <PrimaryButton
             title={'Take a picture'}
-            icon={<Ionicons name="camera-outline" size={24} color="white" />}
-            onPress={() => captureImage(true)}
+            icon={<Ionicons name="camera-outline" size={30} color="white" />}
+            onPress={() => {
+              captureImage(true);
+              setLastPressed('camera');
+              navigation.navigate('FormScreen');
+            }}
           />
           <SecondaryButton
             title={'Upload from gallery'}
             icon={
-              <Ionicons name="image-outline" size={24} color="rgb(0,179,255)" />
+              <Ionicons name="image-outline" size={30} color="rgb(0,179,255)" />
             }
-            style={{ height: 30, width: 'auto' }}
-            onPress={() => captureImage(false)}
+            onPress={() => {
+              captureImage(false);
+              setLastPressed('gallery');
+              navigation.navigate('FormScreen');
+            }}
           />
         </View>
         <ProgressStepBar currentStepIndex={3} stepSize={5} />

@@ -93,23 +93,39 @@ export const useGlobalStyle = () => {
     FONT32: {
       fontSize: scale(32),
       fontStyle: 'normal',
+      fontFamily: 'Montserrat_400Regular',
     },
-    FONT16: {
-      fontSize: scale(16),
+    FONT28: {
+      fontSize: scale(28),
       fontStyle: 'normal',
+      fontFamily: 'Montserrat_400Regular',
     },
     FONT20: {
       fontSize: scale(20),
       fontStyle: 'normal',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    FONT16: {
+      fontSize: scale(16),
+      fontStyle: 'normal',
+      fontFamily: 'Montserrat_400Regular',
+    },
+    FONT12: {
+      fontSize: scale(12),
+      fontStyle: 'normal',
+      fontFamily: 'Montserrat_400Regular',
     },
     FONTPRIMARY: {
       color: colors.primary,
+      fontFamily: 'Montserrat_400Regular',
     },
     FONTBLACK: {
       color: colors.black,
+      fontFamily: 'Montserrat_400Regular',
     },
     FONTWHITE: {
       color: colors.white,
+      fontFamily: 'Montserrat_400Regular',
     },
   });
 };

@@ -1,4 +1,4 @@
-# Melanoma Detection App 📸💻
+# Melanoma Detector 📸💻
 
 ## Project Overview
 This is an open-source project dedicated to helping people living in regions with a lack of dermatologists! 🚀 We've developed a Skin Cancer Detection App using React Native for the front end and TensorFlow, NumPy, and Python for the back end. The app empowers users to check if a naevus (mole) is benign or malignant.
