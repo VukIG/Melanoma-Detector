@@ -11,29 +11,25 @@ import { Ionicons } from '@expo/vector-icons';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
 import { scale, scaleVertical, scaleImage } from '../helpers/scale';
 
-import PermissionsContext from '../context/PermissionsContext';
-import ImageContext from '../context/ImageContext';
+// import PermissionsContext from '../context/PermissionsContext';
+// import ImageContext from '../context/ImageContext';
 import Input from '../components/input/Input';
 import Checkbox from '../components/input/Checkbox';
 import Slider from '../components/input/Slider';
-import Input from '../components/input/Input';
+// import Input from '../components/input/Input';
 
 const FormScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
-  const [gender, setGender] = useState({ male: false, female: false });
+  // const [gender, setGender] = useState({ male: false, female: false });
   const { lastPressed, setLastPressed } = useContext(PermissionsContext);
   const { imgUri, captureImage, image } = useContext(ImageContext);
-  const { age, setAge, gender, setGender, location, setLocation, sendData } =
-    useContext(FormContext);
+  const { age, setAge, gender, setGender, location, setLocation, sendData, sendData1 } = useContext(FormContext);
   console.log(lastPressed);
   const { width: scaledWidth, height: scaledHeight } = scaleImage(
     100,
     100,
     340,
   );
-
-  // console.log('image uri****: ', imgUri);
-  // console.log('base64****: ', image);
 
   return (
     <BaseScreen>
@@ -64,7 +60,7 @@ const FormScreen = ({ navigation }) => {
           <View style={{ display: 'flex', gap: 12 }}>
             <Input
               value={age}
-              type={'numeric'}
+              type={'number-pad'}
               placeholder={'Enter your age'}
               setState={setAge}
             />
@@ -73,7 +69,7 @@ const FormScreen = ({ navigation }) => {
             <PrimaryButton
               title={'Send'}
               onPress={() => {
-                sendData();
+                sendData1();
                 navigation.navigate('DiagnosisScreen');
               }}
             />

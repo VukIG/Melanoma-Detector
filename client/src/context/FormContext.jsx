@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import ImageContext from './ImageContext';
+import axios from 'axios';
 
 const FormContext = createContext();
 
@@ -20,12 +21,11 @@ export const FormProvider = ({ children }) => {
   const sendData = async () => {
     try {
       const formData = new FormData();
-      formData.append(
-        image
-      );
-      fetch('https://mda-server-api.onrender.com/predict', {
+      formData.append('userInfo', image);
+      // fetch('https://mda-server-api.onrender.com/predict', {
+      fetch('http://192.168.1.172:8000/user-data', {
         method: 'POST',
-        body: formData
+        body: { data: formData },
       })
         .then((res) => {
           if (!res.ok) {
@@ -33,12 +33,41 @@ export const FormProvider = ({ children }) => {
           }
           return res.json();
         })
-        .then((data) => console.log(data))
+        // .then((data) => console.log('data: ', data))
         .catch((error) => console.error('Error:', error));
     } catch (error) {
       console.error('Error uploading image:', error);
     }
   };
+
+  const sendData1 = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('userInfo', { 
+        base64: image,
+        gender: gender,
+        age: age,
+        bodyLocation: locVal,
+      });
+
+      const res = await axios.post(
+        'http://192.168.1.172:8000/user-data',
+        {
+          data: formData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      // console.log('AHHAHAHHA', res.data.message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <FormContext.Provider
       value={{
@@ -49,6 +78,7 @@ export const FormProvider = ({ children }) => {
         location,
         setLocation,
         sendData,
+        sendData1,
         locVal,
         setLocVal,
       }}
