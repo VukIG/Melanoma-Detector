@@ -1,12 +1,10 @@
 import { View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
-import { useState, useContext } from 'react';
-import FormContext from '../../context/FormContext';
+import { useState } from 'react';
 
-const Slider = ({ items, setItems }) => {
+const Slider = ({ items, setItems, locVal, setLocVal }) => {
   const [open, setOpen] = useState(false);
-  const { locVal, setLocVal } = useContext(FormContext);
 
   const basicStyles = useGlobalStyle();
   return (

@@ -35,11 +35,8 @@ export const ImageProvider = ({ children }) => {
       }
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        let base64 = result.assets[0].base64;
-
         setImage(result.assets[0]?.base64); // SHOULD PROBABLY REMOVE
         setImgUri(result.assets[0]?.uri);
-        sendImage(base64);
       }
     } else {
       setErrors((prevState) => ({

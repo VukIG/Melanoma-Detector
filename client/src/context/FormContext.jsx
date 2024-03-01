@@ -1,10 +1,13 @@
-import { createContext, useContext, useState } from 'react';
 import ImageContext from './ImageContext';
 import axios from 'axios';
+import { createContext, useContext, useState } from 'react';
 
 const FormContext = createContext();
 
 export const FormProvider = ({ children }) => {
+
+  const { image, setImage } = useContext(ImageContext);
+
   const [age, setAge] = useState();
   const [gender, setGender] = useState({ male: false, female: false });
   const [locVal, setLocVal] = useState(null);
@@ -16,34 +19,10 @@ export const FormProvider = ({ children }) => {
     { label: 'Lower extremity', value: 'lower extremity' },
   ]);
 
-  const { image } = useContext(ImageContext);
-
   const sendData = async () => {
     try {
       const formData = new FormData();
-      formData.append('userInfo', image);
-      // fetch('https://mda-server-api.onrender.com/predict', {
-      fetch('http://192.168.1.172:8000/user-data', {
-        method: 'POST',
-        body: { data: formData },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return res.json();
-        })
-        // .then((data) => console.log('data: ', data))
-        .catch((error) => console.error('Error:', error));
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  };
-
-  const sendData1 = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('userInfo', { 
+      formData.append('image', { 
         base64: image,
         gender: gender,
         age: age,
@@ -51,7 +30,7 @@ export const FormProvider = ({ children }) => {
       });
 
       const res = await axios.post(
-        'http://192.168.1.172:8000/user-data',
+        'http://192.168.1.172:8000/predict',
         {
           data: formData,
         },
@@ -62,7 +41,7 @@ export const FormProvider = ({ children }) => {
         },
       );
 
-      // console.log('AHHAHAHHA', res.data.message);
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -78,7 +57,6 @@ export const FormProvider = ({ children }) => {
         location,
         setLocation,
         sendData,
-        sendData1,
         locVal,
         setLocVal,
       }}
