@@ -29,8 +29,20 @@ app.add_middleware(
 
 @app.get('/')
 def read_root():
+    print("yo")
     return { "message" : "jesam" }
 
+@app.post('/user-data')
+def read_root(data: dict):
+    print("user info received!")
+    print(data)
+    return { "message" : data["data"]["_parts"][0] }
+
+def resize_image(image_path, width, height):
+    image = Image.open(image_path)
+        
+    newImage = image.resize((width, height))
+    newImage.save("resizedImage.jpg")
 
 @app.post("/predict")
 async def predict(age: int = Form(...), 
@@ -47,8 +59,7 @@ async def predict(age: int = Form(...),
 def image_to_array(img, width, height):
     image = Image.open(io.BytesIO(img))  # Create a BytesIO object and pass it to Image.open()
     
-    # image_grayscale = image.convert("L")
-
+    # image_grayscale = image.convert("L")      # probably want to keep original image color
     # resized_image = image_grayscale.resize((width, height))
     resized_image = image.resize((width, height))   # probably want to keep original image color
     image_array = np.array(resized_image)

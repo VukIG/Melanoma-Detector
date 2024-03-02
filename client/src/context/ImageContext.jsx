@@ -46,6 +46,29 @@ export const ImageProvider = ({ children }) => {
     }
   };
 
+  const sendImage = async (base64Image) => {
+    try {
+      const formData = new FormData();
+      formData.append('photo', { base64: base64Image });
+
+      const res = await axios.post(
+        'http://192.168.1.172:8000/predict',
+        {
+          image: formData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      // console.log(res);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
+
   return (
     <ImageContext.Provider
       value={{
