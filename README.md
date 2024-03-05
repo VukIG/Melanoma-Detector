@@ -29,8 +29,12 @@ This is an open-source project dedicated to helping people living in regions wit
 - 🌈 **Improved UX/UI:** I plan to enhance the user interface with nativewind.
 
 ## Acknowledgments
-A big shoutout to the open-source community and the incredible tools and libraries that made this project possible. Also
-special thanks to my team members for contributing so much to this project! 🎉
+A big shoutout to the open-source community and the incredible tools and libraries that made this project possible. 
+Special thanks to my team members for contributing so much to this project! 🎉 
+
+Also a big thank you to the authors of the
+# Melanoma and Nevus Skin Lesion Classification Using Handcraft and Deep Learning Feature Fusion via Mutual Information Measures
+research paper for sharing their CAD system
 
 Happy Coding! 🚀👩‍💻👨‍💻
 
