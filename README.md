@@ -33,7 +33,7 @@ A big shoutout to the open-source community and the incredible tools and librari
 Special thanks to my team members for contributing so much to this project! 🎉 
 
 Also a big thank you to the authors of the
-# Melanoma and Nevus Skin Lesion Classification Using Handcraft and Deep Learning Feature Fusion via Mutual Information Measures
+### Melanoma and Nevus Skin Lesion Classification Using Handcraft and Deep Learning Feature Fusion via Mutual Information Measures
 research paper for sharing their CAD system
 
 Happy Coding! 🚀👩‍💻👨‍💻
