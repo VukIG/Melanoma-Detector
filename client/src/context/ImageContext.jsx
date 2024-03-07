@@ -14,28 +14,26 @@ export const ImageProvider = ({ children }) => {
   const captureImage = async (isCamera) => {
     const permission = isCamera ? permissions.camera : permissions.gallery;
 
+    const options = {
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+      base64: true, 
+    };
+
     if (permission === true) {
       let result;
       if (isCamera) {
-        result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-          base64: true,
-        });
+        result = await ImagePicker.launchCameraAsync(options);
       } else {
-        result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-          base64: true,
-        });
+        result = await ImagePicker.launchImageLibraryAsync(options);
       }
 
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        setImage(result.assets[0]?.base64); // SHOULD PROBABLY REMOVE
+      // console.log(result);
+
+      if (!result.canceled) {
+        setImage(result.assets[0]?.base64);
         setImgUri(result.assets[0]?.uri);
       }
     } else {
@@ -52,7 +50,7 @@ export const ImageProvider = ({ children }) => {
       formData.append('photo', { base64: base64Image });
 
       const res = await axios.post(
-        'http://192.168.1.172:8000/predict',
+        'http://192.168.1.172:8000/predict1',
         {
           image: formData,
         },

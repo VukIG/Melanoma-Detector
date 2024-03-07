@@ -3538,15 +3538,10 @@
   dependencies:
     "@expo/config" "~8.5.0"
 
-"expo-file-system@~16.0.0":
-  "integrity" "sha512-JpKMbKfwTaMCbwUwq7MwcSbPR7r+IqZEL3RFam3ClPHDtKLnlEoywREeaDsWjSZb7dS25hG3WqXspfTuugCDvg=="
-  "resolved" "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.5.tgz"
-  "version" "16.0.5"
-
-"expo-file-system@~16.0.6":
-  "integrity" "sha512-ATCHL7nEg2WwKeamW/SDTR9jBEqM5wncFq594ftKS5QFmhKIrX48d9jyPFGnNq+6h8AGPg4QKh2KCA4OY49L4g=="
-  "resolved" "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.6.tgz"
-  "version" "16.0.6"
+"expo-file-system@^16.0.7", "expo-file-system@~16.0.0", "expo-file-system@~16.0.6":
+  "integrity" "sha512-BELr1Agj6WK0PKVMcD0rqC3fP5unKfp2KW8/sNhtTHgdzQ/F0Pylq9pTk9u7KEu0ZbEdTpk5EMarLMPwffi3og=="
+  "resolved" "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.7.tgz"
+  "version" "16.0.7"
 
 "expo-font@~11.10.3":
   "integrity" "sha512-q1Td2zUvmLbCA9GV4OG4nLPw5gJuNY1VrPycsnemN1m8XWTzzs8nyECQQqrcBhgulCgcKZZJJ6U0kC2iuSoQHQ=="
