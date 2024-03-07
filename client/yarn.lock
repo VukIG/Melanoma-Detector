@@ -3538,7 +3538,7 @@
   dependencies:
     "@expo/config" "~8.5.0"
 
-"expo-file-system@^16.0.7", "expo-file-system@~16.0.0", "expo-file-system@~16.0.6":
+"expo-file-system@~16.0.0", "expo-file-system@~16.0.6":
   "integrity" "sha512-BELr1Agj6WK0PKVMcD0rqC3fP5unKfp2KW8/sNhtTHgdzQ/F0Pylq9pTk9u7KEu0ZbEdTpk5EMarLMPwffi3og=="
   "resolved" "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.7.tgz"
   "version" "16.0.7"
