@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { BaseScreen } from '../components/common/BaseScreen';
 import { useGlobalStyle } from '../hooks/useGlobalStyle';
 import { scaleVertical } from '../helpers/scale';
@@ -7,7 +7,7 @@ import { SecondaryButton } from '../components/button/SecondaryButton';
 import { ProgressStepBar } from '../components/ProgressStepBar';
 import { WelcomeSvg } from '../constants/svg';
 import { Ionicons } from '@expo/vector-icons';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PermissionsContext from '../context/PermissionsContext';
 import ImageContext from '../context/ImageContext';
 
