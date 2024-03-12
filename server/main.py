@@ -1,6 +1,8 @@
 import binascii
 from fastapi import Request
+from fastapi import Request
 from typing import Optional
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -27,6 +29,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class PredictFormData(BaseModel):
+    age: int
+    gender: str
+    localization: str
+
 @app.get('/')
 def read_root():
     print("yo")
@@ -45,24 +52,42 @@ def resize_image(image_path, width, height):
     newImage.save("resizedImage.jpg")
 
 @app.post("/predict")
-async def predict(age: int = Form(...), 
-                  gender: str = Form(...), 
-                  localization: str = Form(...),
-                  photo: UploadFile = File(...)):
-    contents = await photo.read()
+async def predict(
+                age: int = Form(...), 
+                gender: str = Form(...), 
+                localization: str = Form(...),
+                photo: UploadFile = File(...)):
+    try:
+        image_path = f"images/{photo.filename}"
 
-    image_to_array(contents,450,600)
+        print('age: ', age)
+        print('gender: ', gender)
+        print('localization: ', localization)
+        print(photo)
+        print('image_path: ', image_path)
 
+        with open(image_path, "wb") as file:
+            contents = await photo.read()
+            file.write(contents) 
 
-    return {"file_contents": contents.decode("utf-8", "ignore")}
+        image_to_array(contents, 450, 600)
+
+        file.close()
+        return {"file_contents": contents.decode("utf-8", "ignore")}
+    except Exception as e:
+        print("Error receiving image:", e)
+        return {"error": e}  
 
 def image_to_array(img, width, height):
-    image = Image.open(io.BytesIO(img))  # Create a BytesIO object and pass it to Image.open()
+    image = Image.open(io.BytesIO(img))
     
     # image_grayscale = image.convert("L")      # probably want to keep original image color
     # resized_image = image_grayscale.resize((width, height))
     resized_image = image.resize((width, height))   # probably want to keep original image color
     image_array = np.array(resized_image)
+
+    # print("image_array: ", image_array)
+
     normalized_image = image_array / 255.0  # value depends on the pixel value range
     print(normalized_image)
 
