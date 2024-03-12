@@ -1,11 +1,12 @@
 import ImageContext from './ImageContext';
+import axios from 'axios';
 import { createContext, useContext, useState } from 'react';
 
 const FormContext = createContext();
 
 export const FormProvider = ({ children }) => {
 
-  const { setImage } = useContext(ImageContext);
+  const { image, setImage } = useContext(ImageContext);
 
   const [age, setAge] = useState();
   const [gender, setGender] = useState({ male: false, female: false });
@@ -18,21 +19,20 @@ export const FormProvider = ({ children }) => {
     { label: 'Lower extremity', value: 'lower extremity' },
   ]);
 
-  const sendData = () => {
+  const sendData = async () => {
     try {
       const formData = new FormData();
-      formData.append('age', age);
-      formData.append('gender', gender);
-      formData.append('localization', locVal);
+      formData.append('image', { 
+        base64: image,
+        gender: gender,
+        age: age,
+        bodyLocation: locVal,
+      });
 
-      formData.append('photo', { base64: setImage });
-      
-      console.log(formData);
-
-      const res = axios.post(
+      const res = await axios.post(
         'http://192.168.1.172:8000/predict',
         {
-          form: formData, //CRITICAL CHANGED IMAGE TO FORM
+          data: formData,
         },
         {
           headers: {
@@ -41,9 +41,9 @@ export const FormProvider = ({ children }) => {
         },
       );
 
-      console.log(res);
-    } catch (error) {
-      console.error('Error uploading image:', error);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
     }
   };
 

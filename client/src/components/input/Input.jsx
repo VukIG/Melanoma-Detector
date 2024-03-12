@@ -27,6 +27,7 @@ const Input = ({ placeholder, type, setState, value }) => {
         onChangeText={handleTextChange}
         keyboardType={type}
         placeholder={placeholder}
+        returnKeyType="done"
         style={[
           basicStyles.FONTPRIMARY,
           {

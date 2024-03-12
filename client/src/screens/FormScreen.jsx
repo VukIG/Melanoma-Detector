@@ -31,9 +31,6 @@ const FormScreen = ({ navigation }) => {
     340,
   );
 
-  // console.log('image uri****: ', imgUri);
-  // console.log('base64****: ', image);
-
   return (
     <BaseScreen>
       <View style={{ margin: 4 }}>
@@ -63,7 +60,7 @@ const FormScreen = ({ navigation }) => {
           <View style={{ display: 'flex', gap: 12 }}>
             <Input
               value={age}
-              type={'numeric'}
+              type={'number-pad'}
               placeholder={'Enter your age'}
               setState={setAge}
             />
