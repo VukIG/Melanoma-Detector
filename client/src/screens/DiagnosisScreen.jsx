@@ -38,7 +38,7 @@ const DiagnosisScreen = () => {
             source={{ uri: imgUri }}
           />
           <Text style={[basicStyles.FONT32, { margin: 10 }]}>
-            Your naveus is 'insert text here based on probability' cancerous
+            Your naveus is probably NOT cancerous
           </Text>
           <Text style={[basicStyles.FONT20, basicStyles.FONTPRIMARY]}>
             Disclaimer: This model makes mistakes and is NOT* a replacement for
