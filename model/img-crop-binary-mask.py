@@ -21,7 +21,7 @@
 
 """ MOST RECENT COMMIT DETAILS
 
-Commit: Improve image cropping and handle low-quality images
+Commit: Improve image cropping and handle low-quality images + Added Argparse for flags.
 
 Changes:
 - Modified the `crop_image` function to return a boolean `is_valid` indicating if the cropped image is valid or not.
@@ -61,19 +61,6 @@ from skimage.transform import resize
 # Constants
 IMAGE_PADDING = 10 # Pixle padding around ROI before cropping.
 IMG_CONTRAST = 1.0 # Image contrast factor. (0.0 = no contrast, 2.0 = double contrast)
-
-# Define the directories
-
-base_dir = '/home/vuk/Documents/ML_Data/HAM/processed'
-starting_dir = '/home/vuk/Documents/ML_Data/HAM/train/'
-benign_dir = '/home/vuk/Documents/ML_Data/HAM/train/benign'
-malignant_dir = '/home/vuk/Documents/ML_Data/HAM/train/malignant'
-roi_dir = os.path.join(base_dir, 'roi')
-binary_dir = os.path.join(base_dir, 'binary')
-
-# Create the output directories if they don't exist
-os.makedirs(roi_dir, exist_ok=True)
-os.makedirs(binary_dir, exist_ok=True)
 
 
 def read_image(image_path):
@@ -190,7 +177,7 @@ def invert_colors(image):
     return inverted_image
 
 
-def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_name, is_valid):
+def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_name, is_valid, output_dir):
     """
     Saves the cropped original and the cropped binary mask images.
 
@@ -201,6 +188,7 @@ def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_na
         i (int): The index of the image.
         class_name (str): The class name of the image (benign or malignant).
         is_valid (bool): Indicates whether the cropped image is valid or not.
+        output_dir (str): The output directory for saving the images.
 
     Returns:
         None
@@ -209,13 +197,13 @@ def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_na
         # Save the rejected image with the caption
         cv2.putText(cropped_original, "Image not valid - Image Quality Too Low", (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-        cv2.imwrite(os.path.join(output_path, f"{class_name}_rejected_{i}.jpg"), cropped_original)
+        cv2.imwrite(os.path.join(output_dir, f"{class_name}_rejected_{i}.jpg"), cropped_original)
         return
 
     # Save the cropped original image
-    cv2.imwrite(os.path.join(output_path, f"{class_name}_cropped_{i}.jpg"), cropped_original)
+    cv2.imwrite(os.path.join(output_dir, f"{class_name}_cropped_{i}.jpg"), cropped_original)
     # Save the cropped image with the binary mask applied
-    cv2.imwrite(os.path.join(binary_dir, f"{class_name}_binary_{i}.jpg"), cropped_mask)
+    cv2.imwrite(os.path.join(output_dir, f"{class_name}_binary_{i}.jpg"), cropped_mask)
 
 
 def main():
@@ -227,17 +215,49 @@ def main():
     inverted image, and the binary mask are then saved to the specified output directory.
 
     Args:
-        base_dir = '/home/vuk/Documents/ML_Data/HAM/processed'
-        starting_dir = '/home/vuk/Documents/ML_Data/HAM/train/'
-        benign_dir = '/home/vuk/Documents/ML_Data/HAM/train/benign'
-        malignant_dir = '/home/vuk/Documents/ML_Data/HAM/train/malignant'
-        roi_dir = os.path.join(base_dir, 'roi')
-        binary_dir = os.path.join(base_dir, 'binary')
+        Base directory for processed data "-bd", for "--base_dir"
+        Starting directory for training data "-sd", for "--starting_dir"
+        Directory for benign images "-bnd", for "--benign_dir"
+        Directory for malignant images "-md", for "--malignant_dir"
+        Output directory for saving the images "-o", for "--output_dir"
 
     Returns:
         None main()
+
     """
+
+    parser = argparse.ArgumentParser(description="Image Cropping and Mask Generation Tool")
+    parser.add_argument("-bd", "--base_dir", default="/home/vuk/Documents/ML_Data/HAM/processed",
+                        help="Base directory for processed data (default: /home/vuk/Documents/ML_Data/HAM/processed)")
+    
+    parser.add_argument("-sd", "--starting_dir", default="/home/vuk/Documents/ML_Data/HAM/train/",
+                        help="Starting directory for training data (default: /home/vuk/Documents/ML_Data/HAM/train/)")
+
+    parser.add_argument("-bnd", "--benign_dir", default="/home/vuk/Documents/ML_Data/HAM/train/benign",
+                        help="Directory for benign images (default: /home/vuk/Documents/ML_Data/HAM/train/benign)")
+
+    parser.add_argument("-md", "--malignant_dir", default="/home/vuk/Documents/ML_Data/HAM/train/malignant",
+                        help="Directory for malignant images (default: /home/vuk/Documents/ML_Data/HAM/train/malignant)")
+
+    parser.add_argument("-o", "--output_dir", default="/path/to/output/directory",
+                        help="Output directory for saving the images (default: /path/to/output/directory)")
+    args = parser.parse_args()
+
+    base_dir = args.base_dir
+    starting_dir = args.starting_dir
+    benign_dir = args.benign_dir
+    malignant_dir = args.malignant_dir
+    output_dir = args.output_dir
+
+    roi_dir = os.path.join(output_dir, 'roi')
+    binary_dir = os.path.join(output_dir, 'binary')
+
+    # Create the output directories if they don't exist
+    os.makedirs(roi_dir, exist_ok=True)
+    os.makedirs(binary_dir, exist_ok=True)
+
     image_paths = glob.glob(os.path.join(starting_dir, '*', '*'))
+
     for i, image_path in enumerate(image_paths):
         print(image_path)
         original_image = read_image(image_path)
@@ -256,7 +276,7 @@ def main():
         else:
             print(f"Unknown class for image: {image_path}")
             continue
-        save_cropped_images(cropped_original, cropped_mask, roi_dir, i, class_name, is_valid)
+        save_cropped_images(cropped_original, cropped_mask, roi_dir, i, class_name, is_valid, output_dir)
 
 
 if __name__ == "__main__":
