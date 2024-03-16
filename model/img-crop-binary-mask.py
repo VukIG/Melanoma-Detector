@@ -18,6 +18,38 @@
 # thus it will not be used. Also glob library was added to loop over the benign and
 # malignant folders in order to prepeare the HAM dataset for model training
 
+
+""" MOST RECENT COMMIT DETAILS
+
+Commit: Improve image cropping and handle low-quality images
+
+Changes:
+- Modified the `crop_image` function to return a boolean `is_valid` indicating if the cropped image is valid or not.
+  - Added a check to determine if the cropped image is empty or completely white.
+  - If the cropped image is invalid, the function returns `None` for the cropped 
+    original and cropped mask, and `False` for `is_valid`.
+
+- Updated the `save_cropped_images` function to handle invalid cropped images.
+  - Added a new parameter `is_valid` to indicate whether the cropped image is valid or not.
+  - If `is_valid` is `False`, the function saves the rejected image with the caption 
+    "Image not valid - Image Quality Too Low" using `cv2.putText`.
+  - The rejected image is saved in the `output_path` directory with the prefix 
+    `{class_name}_rejected_{i}.jpg`.
+
+- Modified the `main` function to incorporate the changes in `crop_image` and `save_cropped_images`.
+  - After calling `crop_image`, the function checks the value of `is_valid`.
+  - If `is_valid` is `False`, it prints a message indicating that the image is not valid due to low quality.
+  - The `save_cropped_images` function is called with the `is_valid` parameter to determine whether 
+    to save the cropped images or the rejected image with the caption.
+
+These changes improve the image cropping process by handling cases where the cropped image 
+is empty or completely white. The script now saves the rejected images with the caption 
+"Image not valid - Image Quality Too Low" in the `output_path` directory, while still 
+saving the valid cropped images and binary masks as before. This helps in identifying 
+and managing low-quality images in the dataset.
+
+"""
+
 import glob
 import argparse
 import cv2
@@ -100,14 +132,14 @@ def crop_image(original_image, binary_mask, buffer=IMAGE_PADDING):
         buffer (int, optional): The buffer size around the region of interest. Defaults to 0.
 
     Returns:
-        tuple: A tuple containing the cropped original image and the cropped binary mask.
+        tuple: A tuple containing the cropped original image, the cropped binary mask, and a boolean indicating if the cropped image is valid.
     """
     # Find the contours in the binary mask
     contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     # If no contours are found, return None
     if not contours:
         print("No contours detected; unable to crop the image.")
-        return None, None
+        return None, None, False
 
     # Find the largest contour and compute the bounding box
     largest_contour = max(contours, key=cv2.contourArea)
@@ -127,7 +159,13 @@ def crop_image(original_image, binary_mask, buffer=IMAGE_PADDING):
     # Crop the original image and the binary mask
     cropped_original = original_image[y:y + side_length, x:x + side_length]
     cropped_mask = binary_mask[y:y + side_length, x:x + side_length]
-    return cropped_original, cropped_mask
+
+    # Check if the cropped image is empty or completely white
+    if cropped_original.size == 0 or np.all(cropped_original >= 250):
+        print("Cropped image is empty or completely white.")
+        return None, None, False
+
+    return cropped_original, cropped_mask, True
 
 
 def invert_colors(image):
@@ -152,7 +190,7 @@ def invert_colors(image):
     return inverted_image
 
 
-def save_cropped_images(cropped_original, cropped_mask, i, class_name):
+def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_name, is_valid):
     """
     Saves the cropped original and the cropped binary mask images.
 
@@ -162,16 +200,23 @@ def save_cropped_images(cropped_original, cropped_mask, i, class_name):
         output_path (str): The path where the images will be saved.
         i (int): The index of the image.
         class_name (str): The class name of the image (benign or malignant).
+        is_valid (bool): Indicates whether the cropped image is valid or not.
 
     Returns:
         None
     """
-    os.makedirs(os.path.join(roi_dir, class_name), exist_ok=True)
-    os.makedirs(os.path.join(binary_dir, class_name), exist_ok=True)
+    if not is_valid:
+        # Save the rejected image with the caption
+        cv2.putText(cropped_original, "Image not valid - Image Quality Too Low", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        cv2.imwrite(os.path.join(output_path, f"{class_name}_rejected_{i}.jpg"), cropped_original)
+        return
+
     # Save the cropped original image
-    cv2.imwrite(os.path.join(roi_dir,class_name, f"{i}.jpg"), cropped_original)
+    cv2.imwrite(os.path.join(output_path, f"{class_name}_cropped_{i}.jpg"), cropped_original)
     # Save the cropped image with the binary mask applied
-    cv2.imwrite(os.path.join(binary_dir,class_name, f"{i}.jpg"), cropped_mask)
+    cv2.imwrite(os.path.join(binary_dir, f"{class_name}_binary_{i}.jpg"), cropped_mask)
+
 
 def main():
     """
@@ -182,21 +227,16 @@ def main():
     inverted image, and the binary mask are then saved to the specified output directory.
 
     Args:
-        -i, --input (str): Path to the input image file.
-        -o, --output (str, optional): Directory to save the output images. If not provided,
-            the output images will be saved in the same directory as the input image.
+        base_dir = '/home/vuk/Documents/ML_Data/HAM/processed'
+        starting_dir = '/home/vuk/Documents/ML_Data/HAM/train/'
+        benign_dir = '/home/vuk/Documents/ML_Data/HAM/train/benign'
+        malignant_dir = '/home/vuk/Documents/ML_Data/HAM/train/malignant'
+        roi_dir = os.path.join(base_dir, 'roi')
+        binary_dir = os.path.join(base_dir, 'binary')
 
     Returns:
-        None
+        None main()
     """
-    #parser = argparse.ArgumentParser(description="Image Cropping and Mask Generation Tool")
-    #parser.add_argument("-i", "--input", required=True, help="Path to the input image file")
-    #parser.add_argument("-o", "--output", default="", help="Directory to save the output images")
-    #args = parser.parse_args()
-
-    #input_path = args.input
-    #output_path = args.output if args.output else os.path.dirname(input_path)
-
     image_paths = glob.glob(os.path.join(starting_dir, '*', '*'))
     for i, image_path in enumerate(image_paths):
         print(image_path)
@@ -206,7 +246,9 @@ def main():
             continue  # Skip to the next image if loading failed
         preprocessed_image = preprocess_image(original_image)
         binary_mask = generate_binary_mask(preprocessed_image)
-        cropped_original, cropped_mask = crop_image(original_image, binary_mask)
+        cropped_original, cropped_mask, is_valid = crop_image(original_image, binary_mask)
+        if not is_valid:
+            print(f"Image {i} not valid - Image Quality Too Low.")
         if 'benign' in image_path:
             class_name = 'benign'
         elif 'malignant' in image_path:
@@ -214,6 +256,8 @@ def main():
         else:
             print(f"Unknown class for image: {image_path}")
             continue
-        save_cropped_images(cropped_original, cropped_mask, i, class_name)
+        save_cropped_images(cropped_original, cropped_mask, roi_dir, i, class_name, is_valid)
+
+
 if __name__ == "__main__":
     main()
