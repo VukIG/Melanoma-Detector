@@ -152,7 +152,7 @@ def invert_colors(image):
     return inverted_image
 
 
-def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_name):
+def save_cropped_images(cropped_original, cropped_mask, i, class_name):
     """
     Saves the cropped original and the cropped binary mask images.
 
@@ -166,10 +166,12 @@ def save_cropped_images(cropped_original, cropped_mask, output_path, i, class_na
     Returns:
         None
     """
+    os.makedirs(os.path.join(roi_dir, class_name), exist_ok=True)
+    os.makedirs(os.path.join(binary_dir, class_name), exist_ok=True)
     # Save the cropped original image
-    cv2.imwrite(os.path.join(output_path, f"{class_name}_cropped_{i}.jpg"), cropped_original)
+    cv2.imwrite(os.path.join(roi_dir,class_name, f"{i}.jpg"), cropped_original)
     # Save the cropped image with the binary mask applied
-    cv2.imwrite(os.path.join(binary_dir, f"{class_name}_binary_{i}.jpg"), cropped_mask)
+    cv2.imwrite(os.path.join(binary_dir,class_name, f"{i}.jpg"), cropped_mask)
 
 def main():
     """
@@ -212,6 +214,6 @@ def main():
         else:
             print(f"Unknown class for image: {image_path}")
             continue
-        save_cropped_images(cropped_original, cropped_mask, roi_dir, i, class_name)
+        save_cropped_images(cropped_original, cropped_mask, i, class_name)
 if __name__ == "__main__":
     main()

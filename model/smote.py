@@ -1,37 +1,44 @@
-from imblearn.over_sampling import SMOTE
 import os
-import cv2
 import numpy as np
+from keras.preprocessing.image import ImageDataGenerator, array_to_img
+from imblearn.over_sampling import SMOTE
 
-benign_dir = '/home/vuk/Documents/ML_Data/HAM/train/benign'
-malignant_dir = '/home/vuk/Documents/ML_Data/HAM/train/malignant'
+patho = {'benign': 0, 'malignant': 1}
 
-images = []
-labels = []
+imagegen = ImageDataGenerator()
+# Load train data from drive
+train_generator = imagegen.flow_from_directory("/home/vuk/Documents/ML_Data/HAM/processed/roi/", class_mode="binary", shuffle=False, batch_size=128, target_size=(224, 224), seed=42)
+x = np.concatenate([train_generator.next()[0] for i in range(train_generator.__len__())])
+y = np.concatenate([train_generator.next()[1] for i in range(train_generator.__len__())])
 
-def load_and_preprocess_images(directory):
-    for filename in os.listdir(directory):
-        img = cv2.imread(os.path.join(directory, filename), cv2.IMREAD_GRAYSCALE)
-        img = img.flatten()
-        images.append(img)
-        labels.append(0 if 'benign' in directory else 1)
-    return np.array(images), np.array(labels)
+# Convert color images to a vector
+X_train = x.reshape(1293, 224*224*3)
 
-X_benign, y_benign = load_and_preprocess_images(benign_dir)
-X_malignant, y_malignant = load_and_preprocess_images(malignant_dir)
+# Apply SMOTE method to the minority class (malignant)
+sm = SMOTE(random_state=2)
+X_smote, y_smote = sm.fit_resample(X_train, y)
 
-X = np.concatenate((X_benign, X_malignant))
-y = np.concatenate((y_benign, y_malignant))
+Xsmote_img = X_smote.reshape(6700, 224, 224, 3)
 
-smote = SMOTE(sampling_strategy='minority', random_state=42)
-X_resampled, y_resampled = smote.fit_resample(X, y)
+# This function returns the label name
+def get_key(val): 
+    for key, value in patho.items(): 
+        if val == value: 
+            return key 
 
-# Assuming the images were originally grayscale and resized to 64x64
-# Adjust the reshaping dimensions to match the original image size
-X_resampled_images = X_resampled.reshape(-1, 64, 64)
-
-if not os.path.exists(malignant_dir):
-    os.makedirs(malignant_dir)
-
-for i, img in enumerate(X_resampled_images):
-    cv2.imwrite(os.path.join(malignant_dir, f'malignant_{i}.png'), img)
+# Adjusted saving part
+for i in range(len(Xsmote_img)):
+    # Check if the label is 'malignant'
+    if y_smote[i] == patho['malignant']:
+        # Define the directory for malignant images
+        malignant_dir = '/home/vuk/Documents/ML_Data/HAM/processed/roi/malignant/'
+        
+        # Check if the directory exists, if not, create it
+        if not os.path.exists(malignant_dir):
+            os.mkdir(malignant_dir)
+        
+        # Convert the image array to a PIL image
+        pil_img = array_to_img(Xsmote_img[i] * 255)
+        
+        # Save the image with a naming convention that reflects their index in the oversampled dataset
+        pil_img.save(malignant_dir + 'smote_' + str(1293 + i) + '.jpg')
