@@ -4,7 +4,7 @@
 
 """Compile a Python script into a standalone executable.
 
-Usage:  python compile_executable.py -i img-crop-binary-mask.py -o /path/to/output/directory
+Usage:  python pycompiler-args.py -i img-crop-binary-mask.py -o /path/to/output/directory
 -i = Input python script to be converted to exe
 -o = Output exe directory + aditional files 
 
