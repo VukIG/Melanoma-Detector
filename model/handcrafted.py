@@ -7,10 +7,10 @@ import cv2
 # %%
 def calculate_color_features(image):
     # Convert image to RGB color space
-    rgb_image = cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)
+    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
     # Convert image to LAB color space
-    lab_image = cv2.cvtColor(output_image, cv2.COLOR_BGR2LAB)
+    lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
     
     # Extract the chosen channel from RGB and LAB color spaces
     # For example, to choose the blue channel from RGB and the b* channel from LAB
@@ -83,7 +83,7 @@ def computeIMC(Px, Py, Pd):
 
 
 # %%
-def calculate_texture_features():
+def calculate_texture_features(gray_image):
     # Convert image to grayscale    
     # Compute the GLCM
     distances = [0]  # You can adjust the distances if needed
@@ -104,6 +104,21 @@ def calculate_texture_features():
     variance = graycoprops(glcm, 'ASM').flatten().var()
     idm = np.sum(1 / (1 + np.arange(N)[:, None] - np.arange(N)[None, :]) ** 2 * glcm)
     entropy = -np.sum(glcm * np.log(glcm + 1e-15))  # Avoid division by zero
+
+    sum_variance = 0
+    for k in range(2, 2 * N):
+        sum_variance += (k - (μx + μy)) ** 2 * Px_y[k]
+
+    sum_entropy = 0
+    for k in range(2, 2 * N):
+        sum_entropy -= Px_y[k] * np.log(Px_y[k])
+
+    difference_variance = 0
+    for k in range(N):
+        difference_variance += (k - μ_x_y) ** 2 * P_x_minus_y[k]
+        difference_entropy -= P_x_minus_y[k] * np.log(P_x_minus_y[k])
+
+    
 
     imcorr1, imcorr2 = computeIMC()
     
@@ -126,17 +141,17 @@ def calculate_texture_features():
 def calculate_symmetry(bin_image):    
     
     # Calculate the symmetry mask
-    symmetry_mask = cv2.bitwise_or(bin_image, cv2.flip(bin_img, 1))
+    symmetry_mask = cv2.bitwise_or(bin_image, cv2.flip(bin_image, 1))
     
     # Calculate the synthetic image A
-    synthetic_image = cv2.bitwise_or(bin_img, symmetry_mask)
+    synthetic_image = cv2.bitwise_or(bin_image, symmetry_mask)
     
     # Calculate the symmetry value at 0 degrees
-    symmetry_0_degrees = 1 - (cv2.countNonZero(synthetic_image) / cv2.countNonZero(bin_img))
+    symmetry_0_degrees = 1 - (cv2.countNonZero(synthetic_image) / cv2.countNonZero(bin_image))
     
     # Calculate the symmetry value at 90 degrees
     rotated_image = cv2.rotate(synthetic_image, cv2.ROTATE_90_CLOCKWISE)
-    symmetry_90_degrees = 1 - (cv2.countNonZero(rotated_image) / cv2.countNonZero(bin_img))
+    symmetry_90_degrees = 1 - (cv2.countNonZero(rotated_image) / cv2.countNonZero(bin_image))
     
     # Calculate the average symmetry value
     average_symmetry = (symmetry_0_degrees + symmetry_90_degrees) / 2
@@ -170,7 +185,7 @@ def extract_handcrafted(Iroi, Ibin):
     color_features = calculate_color_features(Iroi)
     color_features = np.array([color_features])
 
-    texture_features = calculate_texture_features()
+    texture_features = calculate_texture_features(gray_image)
     texture_features = np.array([texture_features])
 
     symmetry_value = calculate_symmetry(Ibin)
@@ -179,4 +194,3 @@ def extract_handcrafted(Iroi, Ibin):
     handcrafted_features = np.concatenate([np.array([area, perimeter, circularity, diameter, eccentricity]),
                                         color_features, texture_features, symmetry_value])
     return handcrafted_features
-# %%

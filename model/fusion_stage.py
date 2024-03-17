@@ -1,5 +1,4 @@
 import numpy as np
-import tensorflow as tf
 import pandas as pd
 import os
 from sklearn.feature_selection import mutual_info_classif, SelectKBest
@@ -13,7 +12,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from imgCropBinaryMask import image_data_gen_preprocessing
 from handcrafted import extract_handcrafted
-from modelcrafted import dl_extract_features
+from modelcrafted import dl_extract_features_from_img
 
 
 # Specify the directory containing your training and validation images
@@ -48,7 +47,7 @@ def wrapping_features(img):
     print(img)
     img_bin = bin_mask(img)
     hf = extract_handcrafted(img, img_bin)
-    dlf = dl_extract_features(img)
+    dlf = dl_extract_features_from_img(img)
     # Ensure hf and dlf are 2D arrays before concatenation
     extracted_features = np.concatenate([hf[np.newaxis, :], dlf[np.newaxis, :]], axis=1)
     return extracted_features
@@ -56,6 +55,7 @@ def wrapping_features(img):
 datagen = ImageDataGenerator(preprocessing_function=crop_img)
 
 # Create data generators
+#%%
 train_generator = datagen.flow_from_directory(
     train_dir,
     target_size=(image_height, image_width),
@@ -77,6 +77,7 @@ test_generator = datagen.flow_from_directory(
     class_mode='binary'  # Set class_mode to 'categorical' if you have multiple classes
 )
 
+#%%
 # Extract features from images
 train_features = np.array([wrapping_features(image) for image, _ in train_generator])
 test_features = np.array([wrapping_features(image) for image, _ in test_generator])
@@ -88,6 +89,7 @@ train_labels = label_encoder.fit_transform([labels_dict[os.path.basename(image_p
 test_labels = label_encoder.transform([labels_dict[os.path.basename(image_path)] for image_path in test_generator.filepaths])
 valid_labels = label_encoder.transform([labels_dict[os.path.basename(image_path)] for image_path in valid_generator.filepaths])
 
+#%%
 # Select top N features based on mutual information
 N = 100  # Adjust N as needed
 selector = SelectKBest(mutual_info_classif, k=N).fit(train_features, train_labels)
@@ -95,6 +97,7 @@ train_features_selected = selector.transform(train_features)
 test_features_selected = selector.transform(test_features)
 valid_features_selected = selector.transform(valid_features)
 
+#%%
 # Models to be tested, including RVC now
 models = {
     "LogisticRegression": LogisticRegression(max_iter=1000),
@@ -109,6 +112,7 @@ param_grid = {
     "RVC": {"alpha": [1e-6, 1e-4, 1e-2], "beta": [1e-6, 1e-4, 1e-2]}
 }
 
+#%%
 # Model selection and hyperparameter tuning
 best_models = {}
 for model_name in models:

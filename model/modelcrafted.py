@@ -1,14 +1,8 @@
 # %%
 import tensorflow as tf
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from keras.applications.mobilenet_v2 import preprocess_input
-from keras.preprocessing import image
-from skimage.transform import resize
-import os, shutil
 from keras.preprocessing.image import ImageDataGenerator
-
+import cv2
 
 # %%
 mobile = tf.keras.applications.MobileNetV2(weights='imagenet', include_top=False, input_shape = (224,224,3))
@@ -20,6 +14,7 @@ mobile.summary()
 datagen = ImageDataGenerator(rescale=1./255)
 batch_size = 32
 
+#BUG
 def dl_extract_features(directory, sample_count):
     features = np.zeros(shape=(sample_count, 7, 7, 1280))  # Must be equal to the output of the convolutional base
     labels = np.zeros(shape=(sample_count))
@@ -38,8 +33,12 @@ def dl_extract_features(directory, sample_count):
         if i * batch_size >= sample_count:
             break
     return features, labels
-    
-
+  
+#%%
+def dl_extract_features_from_img(img):
+    resized_img = cv2.resize(img,(224,224))
+    features = mobile.predict(resized_img)
+    return features
 # %%
 numerOfImages = 10005
 train_dir = '/home/vuk/Documents/ML_Data/HAM/processed/roi'
