@@ -120,8 +120,8 @@ def main():
     """Parse command-line arguments and compile the Python script."""
 
     parser = argparse.ArgumentParser(
-        description='Compile a Python script into a standalone executable')
-    parser.add_argument('--help', action='store_true', help='-i input script | -o output_dir')
+        description='Compile a Python script into a standalone executable -i input script | -o output_dir')
+    #parser.add_argument('--help', action='store_true', help='-i input script | -o output_dir')
     
     parser.add_argument('-i',
                         '--input_script',
