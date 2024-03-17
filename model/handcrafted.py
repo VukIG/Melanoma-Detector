@@ -81,6 +81,16 @@ def computeIMC(Px, Py, Pd):
     # Return IMCorr1 and IMCorr2 values
     return IMCorr1, IMCorr2
 
+#%% Calculate mew's 
+def calculate_mew_x_y(P_d):
+    N_g = P_d.shape[0]
+    mew_x = 0
+    mew_y = 0
+    for i in range(1, N_g + 1):
+        for j in range(1, N_g + 1):
+            mew_x += i * P_d[i - 1, j - 1]
+            mew_y += j * P_d[i - 1, j - 1]
+    return mew_x, mew_y
 
 # %%
 def calculate_texture_features(gray_image):
@@ -99,6 +109,9 @@ def calculate_texture_features(gray_image):
 
     Px = np.sum(glcm_2d, axis=1).flatten()  # Sum along rows, then flatten to 1D array
     Py = np.sum(glcm_2d, axis=0).flatten()  # Sum along columns, then flatten to 1D array
+    Pd = np.sum(glcm, axis=(2, 3))  # sum  last two axes to obtain joint probabilities
+    
+    mewx, mewy = calculate_mew_x_y(Pd)
 
     # Calculate statistical texture features
     asm = graycoprops(glcm, 'ASM').flatten().mean()
@@ -108,9 +121,11 @@ def calculate_texture_features(gray_image):
     idm = np.sum(1 / (1 + np.arange(N)[:, None] - np.arange(N)[None, :]) ** 2 * glcm)
     entropy = -np.sum(glcm * np.log(glcm + 1e-15))  # Avoid division by zero
 
+
+
     sum_variance = 0
     for k in range(2, 2 * N):
-        sum_variance += (k - (μx + μy)) ** 2 * Px_y[k]
+        sum_variance += (k - (mewx + mewy)) ** 2 * Px_y[k]
 
     sum_entropy = 0
     for k in range(2, 2 * N):
@@ -160,6 +175,21 @@ def calculate_symmetry(bin_image):
     average_symmetry = (symmetry_0_degrees + symmetry_90_degrees) / 2
     
     return average_symmetry
+# %%
+def calculate_border_irregularity(contours):
+    # Return some default or error value if no contours are found
+    if not contours:
+        return 0, 0 
+    
+    largest_contour = max(contours, key=cv2.contourArea)
+    perimeter = cv2.arcLength(largest_contour, True)
+    convex_hull = cv2.convexHull(largest_contour)
+    hull_perimeter = cv2.arcLength(convex_hull, True)
+    
+    # Higher values indicate more irregularity
+    irregularity = perimeter / hull_perimeter  
+   
+    return irregularity
 
 # %%
 def extract_handcrafted(Iroi, Ibin):
@@ -194,6 +224,9 @@ def extract_handcrafted(Iroi, Ibin):
     symmetry_value = calculate_symmetry(Ibin)
     symmetry_value = np.array([symmetry_value])
 
+    border_irregularity = calculate_border_irregularity(contours) 
+    border_irregularity = np.array([border_irregularity])
+
     handcrafted_features = np.concatenate([np.array([area, perimeter, circularity, diameter, eccentricity]),
-                                        color_features, texture_features, symmetry_value])
+                                        color_features, texture_features, symmetry_value, border_irregularity])
     return handcrafted_features
