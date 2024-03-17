@@ -84,14 +84,9 @@ def compile_script(script_path, output_dir):
         '--onefile',
         '--name', executable_name,
         '--hidden-import', 'opencv-python',
+        '--collect-data', 'cv2',
         '--hidden-import', 'scikit-image',
-        '--hidden-import', 'os',
-        '--hidden-import', 'glob',
-        '--hidden-import', 'argparse',
-        '--hidden-import', 'numpy',
-        '--hidden-import', 'sys',
-        '--hidden-import', 'subprocess',
-        '--hidden-import', 'shutil',
+        '--collect-data', 'skimage.transform',
         script_path
     ]
 
