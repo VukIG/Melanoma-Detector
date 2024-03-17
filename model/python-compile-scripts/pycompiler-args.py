@@ -83,6 +83,17 @@ def compile_script(script_path, output_dir):
         'pyinstaller',
         '--onefile',
         '--name', executable_name,
+        '--hidden-import cv2',
+        '--hidden-import skimage',
+        '--hidden-import skimage.transform',
+        '--hidden-import os',
+        '--hidden-import glob',
+        '--hidden-import argparse',
+        '--hidden-import numpy',
+        '--hidden-import sys',
+        '--hidden-import platform',
+        '--hidden-import subprocess',
+        '--hidden-import shutil',
         script_path
     ]
 
@@ -110,6 +121,7 @@ def main():
 
     parser = argparse.ArgumentParser(
         description='Compile a Python script into a standalone executable')
+    parser.add_argument('--help', action='store_true', help='-i input script | -o output_dir')
     
     parser.add_argument('-i',
                         '--input_script',
