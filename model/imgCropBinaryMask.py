@@ -62,6 +62,13 @@ from skimage.transform import resize
 IMAGE_PADDING = 10 # Pixle padding around ROI before cropping.
 IMG_CONTRAST = 1.0 # Image contrast factor. (0.0 = no contrast, 2.0 = double contrast)
 
+def image_data_gen_preprocessing(image_path):
+    img = read_image(image_path)
+    Ipro = preprocess_image(img)
+    Ibin = generate_binary_mask(Ipro)
+    Iroi = crop_image(Ipro,Ibin)
+
+    return Iroi;
 
 def read_image(image_path):
     """
@@ -102,6 +109,7 @@ def generate_binary_mask(image):
     Returns:
         numpy.ndarray: The binary mask generated from the input image.
     """
+
     # Convert the image to grayscale.
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # Apply Otsu's thresholding to the grayscale image.
