@@ -3548,15 +3548,10 @@ expo-constants@~15.4.0:
   dependencies:
     "@expo/config" "~8.5.0"
 
-expo-file-system@~16.0.0:
-  version "16.0.5"
-  resolved "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.5.tgz"
-  integrity sha512-JpKMbKfwTaMCbwUwq7MwcSbPR7r+IqZEL3RFam3ClPHDtKLnlEoywREeaDsWjSZb7dS25hG3WqXspfTuugCDvg==
-
-expo-file-system@~16.0.6:
-  version "16.0.6"
-  resolved "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.6.tgz"
-  integrity sha512-ATCHL7nEg2WwKeamW/SDTR9jBEqM5wncFq594ftKS5QFmhKIrX48d9jyPFGnNq+6h8AGPg4QKh2KCA4OY49L4g==
+expo-file-system@~16.0.0, expo-file-system@~16.0.6:
+  version "16.0.7"
+  resolved "https://registry.npmjs.org/expo-file-system/-/expo-file-system-16.0.7.tgz"
+  integrity sha512-BELr1Agj6WK0PKVMcD0rqC3fP5unKfp2KW8/sNhtTHgdzQ/F0Pylq9pTk9u7KEu0ZbEdTpk5EMarLMPwffi3og==
 
 expo-font@~11.10.3:
   version "11.10.3"
@@ -5736,6 +5731,11 @@ react-native-dropdown-picker@^5.4.6:
   version "5.4.6"
   resolved "https://registry.npmjs.org/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.6.tgz"
   integrity sha512-T1XBHbE++M6aRU3wFYw3MvcOuabhWZ29RK/Ivdls2r1ZkZ62iEBZknLUPeVLMX3x6iUxj4Zgr3X2DGlEGXeHsA==
+
+react-native-fast-tflite@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/react-native-fast-tflite/-/react-native-fast-tflite-1.2.0.tgz"
+  integrity sha512-1hpDXU+XDJ/fHtI7v0ThJj9/bn/utk7C7FLE2Fa60sJawHcsOAxdOlh92BJzhxpYHBMO9367Jlr5f2bKC1DZmA==
 
 "react-native-gesture-handler@>= 1.0.0", react-native-gesture-handler@~2.14.0:
   version "2.14.1"

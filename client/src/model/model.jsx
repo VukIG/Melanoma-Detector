@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Camera } from 'react-native-vision-camera';
 import { useFrameProcessor } from 'react-native-vision-camera';
 import { resize } from 'your-resize-plugin'; // Make sure to import or define the resize function
-
+import { model } from '';
 async function loadTensorflowModel(source) {
     // Placeholder logic to load a model based on the source
     // This needs to be replaced with actual logic to load and return a TensorFlow model
