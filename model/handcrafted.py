@@ -96,7 +96,10 @@ def calculate_texture_features(gray_image):
 
     N = glcm_2d.shape[0] # Number of gray levels
     print(glcm.shape)
-    
+
+    Px = np.sum(glcm_2d, axis=1).flatten()  # Sum along rows, then flatten to 1D array
+    Py = np.sum(glcm_2d, axis=0).flatten()  # Sum along columns, then flatten to 1D array
+
     # Calculate statistical texture features
     asm = graycoprops(glcm, 'ASM').flatten().mean()
     contrast = graycoprops(glcm, 'contrast').flatten().mean()
@@ -120,7 +123,7 @@ def calculate_texture_features(gray_image):
 
     
 
-    imcorr1, imcorr2 = computeIMC()
+    imcorr1, imcorr2 = computeIMC(Px, Py, Pd)
     
     return {
         'ASM': asm,
