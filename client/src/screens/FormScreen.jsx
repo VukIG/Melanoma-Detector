@@ -20,7 +20,7 @@ const FormScreen = ({ navigation }) => {
   const basicStyles = useGlobalStyle();
   const { lastPressed, setLastPressed } = useContext(PermissionsContext);
   const { imgUri, image } = useContext(ImageContext);
-  const { age, setAge, gender, setGender, location, setLocation, 
+  const { age, setAge, location, setLocation, 
   sendData, locVal, setLocVal } =
     useContext(FormContext);
 

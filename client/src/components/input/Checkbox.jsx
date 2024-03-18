@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { useGlobalStyle } from '../../hooks/useGlobalStyle';
@@ -7,21 +7,7 @@ import { colors } from '../../constants/color';
 const Checkbox = () => {
   const basicStyles = useGlobalStyle();
 
-  // const handleGenderChange = (newGender) => {
-  //   if (newGender === 'male') {
-  //     setGender({ male: true, female: false });
-  //   } else if (newGender === 'female') {
-  //     setGender({ male: false, female: true });
-  //   }
-  // };
-
   const [gender, setGender] = useState({ male: false, female: false }); 
-
-  const isToggled = () => {
-    setGender({
-      male: !gender.male, female: !gender.female
-    });
-  };
 
   return (
     <View>
@@ -31,12 +17,12 @@ const Checkbox = () => {
       <View style={styles.row}>
         <BouncyCheckbox
           isChecked={gender.male}
-          onPress={(isToggled)}
+          onPress={() => setGender({ male: true, female: false })}
           fillColor={colors.primary}
           unfillColor="#FFFFFF"
           iconStyle={{ borderColor: colors.primary }}
         />
-        <TouchableOpacity onPress={(isToggled)}>
+        <TouchableOpacity>
           <Text style={[basicStyles.FONT16, { fontWeight: '400', color: 'black' }]}>
             Male
           </Text>
@@ -45,12 +31,12 @@ const Checkbox = () => {
       <View style={styles.row}>
         <BouncyCheckbox
           isChecked={gender.female}
-          onPress={(isToggled)}
+          onPress={() => setGender({ male: false, female: true })}
           fillColor={colors.primary}
           unfillColor="#FFFFFF"
           iconStyle={{ borderColor: colors.primary }}
         />
-        <TouchableOpacity onPress={(isToggled)}>
+        <TouchableOpacity>
           <Text style={[basicStyles.FONT16, { fontWeight: '400', color: 'black' }]}>
             Female
           </Text>
@@ -69,3 +55,12 @@ const styles = StyleSheet.create({
 });
 
 export default Checkbox;
+
+
+  // const handleGenderChange = (newGender) => {
+  //   if (newGender === 'male') {
+  //     setGender({ male: true, female: false });
+  //   } else if (newGender === 'female') {
+  //     setGender({ male: false, female: true });
+  //   }
+  // };
