@@ -39,60 +39,103 @@ def calculate_color_features(image):
         'mean_lab': mean_lab
     }
 
-# %%
+#%% Calculate sigma's
+def calculate_sigma_x_y(glcm):
+    N_g = len(glcm)
+    sigma_x = 0
+    sigma_y = 0
+    mew_x, mew_y = calculate_mew_x_y(glcm)
+    
+    for i in range(N_g):
+        for j in range(N_g):
+            sigma_x += ((i - mew_x) ** 2) * glcm[i][j]
+            sigma_y += ((j - mew_y) ** 2) * glcm[i][j]
 
-def compute_entropy(p):
-    # Ensure p is an array to handle division by zero
-    p = np.array(p)
-    # Avoid division by zero by adding a small constant
-    p = p + np.finfo(float).eps
-    return -np.sum(p * np.log2(p))
+    sigma_x = np.sqrt(sigma_x)
+    sigma_y = np.sqrt(sigma_y)
 
-def compute_mutual_information(p_xy, p_x, p_y):
-    # Calculate entropies
-    H_X = compute_entropy(p_x)
-    H_Y = compute_entropy(p_y)
-    H_XY = compute_entropy(p_xy)
-    # Calculate mutual information
-    return H_X + H_Y - H_XY
-
-
-def computeIMC(Px, Py, Pd):
-    # Calculate entropies
-    H_X = compute_entropy(Px)
-    H_Y = compute_entropy(Py)
-    H_XY = compute_entropy(Pd)
-
-    # Assuming p_xy1 and p_xy2 are defined elsewhere
-    joint_entropy_xy1 = compute_entropy(p_xy1)
-    joint_entropy_xy2 = compute_entropy(p_xy2)
-
-    # Calculate mutual information
-    mutual_information_xy = compute_mutual_information(Pd, Px, Py)
-
-    # Calculate joint entropies for scenarios 1 and 2
-    joint_entropy_xy1 = compute_entropy(p_xy1)
-    joint_entropy_xy2 = compute_entropy(p_xy2)
-
-    # Calculate IMCorr1 and IMCorr2
-    IMCorr1 = (mutual_information_xy - mutual_information_x_y1) / max(H_X, H_Y)
-    IMCorr2 = np.sqrt(1 - np.exp(-2 * (joint_entropy_xy2 - joint_entropy_xy)))
-
-    # Return IMCorr1 and IMCorr2 values
-    return IMCorr1, IMCorr2
+    return sigma_x, sigma_y
 
 #%% Calculate mew's 
 def calculate_mew_x_y(P_d):
     N_g = P_d.shape[0]
     mew_x = 0
     mew_y = 0
+    mew_xy = 0
     for i in range(1, N_g + 1):
         for j in range(1, N_g + 1):
             mew_x += i * P_d[i - 1, j - 1]
             mew_y += j * P_d[i - 1, j - 1]
-    return mew_x, mew_y
+            mu_xy += abs(mew_x - mew_y)
+    return mew_x, mew_y, mu_xy
+#%% Calculate Pxminusy
 
-# %%
+def calculate_Pxy(glcm, Pd):
+    N_g = len(glcm)
+    Pxy = 0
+    
+    for i in range(N_g):
+        for j in range(N_g):
+            Pd[i][j] = glcm[i][j]
+    
+    for i in range(N_g):
+        for j in range(N_g):
+            if abs(i - j) == k:
+                Pxy += Pd[i][j]
+    
+    return Pxy
+
+# %%Entropy function
+def compute_entropy(p):
+    # Ensure p is an array to handle division by zero
+    p = np.array(p)
+    # Avoid division by zero by adding a small constant
+    p = p + np.finfo(float).eps
+    return -np.sum(p * np.log10(p))
+
+#%% Compute entropy H(xy1)
+def compute_entropy_xy1(Px, Py, Pd, Ng):
+    # Avoid division by zero by adding a small constant
+    Px = Px + np.finfo(float).eps
+    Py = Py + np.finfo(float).eps
+    
+    H_xy1 = 0
+    for i in range(Ng):
+        for j in range(Ng):
+            H_xy1 -= Pd[i][j] * np.log10(Px[i] * Py[j])
+    
+    return H_xy1
+
+def compute_entropy_xy2(Px, Py, Ng):
+    # Avoid division by zero by adding a small constant
+    Px = Px + np.finfo(float).eps
+    Py = Py + np.finfo(float).eps
+    
+    H_xy1 = 0
+    for i in range(Ng):
+        for j in range(Ng):
+            H_xy1 -= Px[i]*Py[j] * np.log10(Px[i] * Py[j])
+    
+    return H_xy1
+def computeIMC(Hx, Hy, Hxy, Hxy1, Hxy2):
+
+    # Calculate IMCorr1 and IMCorr2
+    IMCorr1 = ( Hxy - Hxy1) / max(Hx, Hy)
+    IMCorr2 = np.sqrt(1 - np.exp(-2 * (Hxy2 - Hxy)))
+
+    # Return IMCorr1 and IMCorr2 values
+    return IMCorr1, IMCorr2
+#%% Calculate entropies
+def calculate_entropies(Px,Py,Pd,glcm,Ng):
+    Hx = compute_entropy(Px)
+    Hy = compute_entropy(Py)
+    Hxy = calculate_Pxy(glcm, Pd,Ng) #BUG REDOSLED
+
+    Hxy1 = compute_entropy_xy1(Pd, Py, Px, Ng)
+    Hxy2 = compute_entropy_xy2(Px, Py, Ng)
+
+    return Hx,Hy,Hxy,Hxy1,Hxy2
+# %% 
 def calculate_texture_features(gray_image):
     # Convert image to grayscale    
     # Compute the GLCM
@@ -104,43 +147,60 @@ def calculate_texture_features(gray_image):
     #potential bug in dimensionality reduction
     glcm_2d = glcm[0, 0, :, :]
 
-    N = glcm_2d.shape[0] # Number of gray levels
+    Ng = glcm_2d.shape[0] # Number of gray levels
     print(glcm.shape)
 
     Px = np.sum(glcm_2d, axis=1).flatten()  # Sum along rows, then flatten to 1D array
     Py = np.sum(glcm_2d, axis=0).flatten()  # Sum along columns, then flatten to 1D array
     Pd = np.sum(glcm, axis=(2, 3))  # sum  last two axes to obtain joint probabilities
     
-    mewx, mewy = calculate_mew_x_y(Pd)
+    Px_y = calculate_Pxy(glcm, k)
+
+
+    mewx, mewy, mewxy = calculate_mew_x_y(Pd, Ng)
+    sigma_x, sigma_y = calculate_sigma_x_y(glcm, Ng)
+    Hx, Hy,Hxy, Hxy1, Hxy2 = calculate_entropies(Px,Py,Pd,Ng)
+
 
     # Calculate statistical texture features
     asm = graycoprops(glcm, 'ASM').flatten().mean()
     contrast = graycoprops(glcm, 'contrast').flatten().mean()
     correlation = graycoprops(glcm, 'correlation').flatten().mean()
     variance = graycoprops(glcm, 'ASM').flatten().var()
-    idm = np.sum(1 / (1 + np.arange(N)[:, None] - np.arange(N)[None, :]) ** 2 * glcm)
+    idm = np.sum(1 / (1 + np.arange(Ng)[:, None] - np.arange(Ng)[None, :]) ** 2 * glcm)
     entropy = -np.sum(glcm * np.log(glcm + 1e-15))  # Avoid division by zero
 
 
 
     sum_variance = 0
-    for k in range(2, 2 * N):
+    for k in range(2, 2 * Ng):
         sum_variance += (k - (mewx + mewy)) ** 2 * Px_y[k]
 
     sum_entropy = 0
-    for k in range(2, 2 * N):
+    for k in range(2, 2 * Ng):
         sum_entropy -= Px_y[k] * np.log(Px_y[k])
 
     difference_variance = 0
-    for k in range(N):
-        difference_variance += (k - μ_x_y) ** 2 * P_x_minus_y[k]
-        difference_entropy -= P_x_minus_y[k] * np.log(P_x_minus_y[k])
+    for k in range(Ng):
+        difference_variance += (k - mewxy) ** 2 * Px_y[k]
+        difference_entropy -= Px_y[k] * np.log(Px_y[k])
 
     
 
     imcorr1, imcorr2 = computeIMC(Px, Py, Pd)
     
+
     return {
+        'H(x)': Hx,
+        'H(y)': Hy,
+        'H(xy)': Hxy,
+        'H(xy1)': Hxy1,
+        'H(xy2)': Hxy2,
+        'Px_y': Px_y,
+        'sigma_x': sigma_x,
+        'sigma_y': sigma_y,
+        'mew_x': mewx,
+        'mew_y': mewy,
         'ASM': asm,
         'contrast': contrast,
         'correlation': correlation,
