@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import argparse
 import os
 from sklearn.feature_selection import mutual_info_classif, SelectKBest
 from sklearn.model_selection import GridSearchCV
@@ -14,12 +15,48 @@ from imgCropBinaryMask import image_data_gen_preprocessing
 from handcrafted import extract_handcrafted
 from modelcrafted import dl_extract_features_from_img
 
+"""Argparse input for script to eliminate errors when running on non native machines
 
+Example Usage:
+python fusion_stage.py -tr-dir /path/to -ts-dir /path/to -val-dir /path/to -csv /path/to
+
+"""
+parser = argparse.ArgumentParser(description='Directory arguments for datasets')
+parser.add_argument('-tr-dir',
+                    '--train_dir',
+                    required=True,
+                    help='Input train dataset')
+
+parser.add_argument('-ts-dir',
+                    '--test_dir',
+                    required=True,
+                    help='Input test dataset')
+
+parser.add_argument('-val-dir',
+                    '--valid_dir',
+                    required=True,
+                    help='Input validated dataset')
+
+parser.add_argument('-csv',
+                    '--csv_file',
+                    required=True,
+                    help='Input csv dataset')
+args = parser.parse_args()
+
+train_dir = args.train_dir
+output_dir = args.test_dir
+valid_dir = args.valid_dir
+csv_file = args.csv_file
+
+
+""" Old hard coded values for redundancy
 # Specify the directory containing your training and validation images
-train_dir = '/home/vuk/Documents/ML_Data/HAM/train'
-test_dir = '/home/vuk/Documents/ML_Data/HAM/test'
-valid_dir = '/home/vuk/Documents/ML_Data/HAM/validate'
-csv_file = '/home/vuk/Documents/ML_Data/HAM/HAM10000_metadata.csv'
+#train_dir = '/home/vuk/Documents/ML_Data/HAM/train'
+#test_dir = '/home/vuk/Documents/ML_Data/HAM/test'
+#valid_dir = '/home/vuk/Documents/ML_Data/HAM/validate'
+#csv_file = '/home/vuk/Documents/ML_Data/HAM/HAM10000_metadata.csv'
+"""
+
 
 numerOfImages = 10005
 image_height = image_width = 224
