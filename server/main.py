@@ -90,5 +90,3 @@ def image_to_array(img, width, height):
 
     normalized_image = image_array / 255.0  # value depends on the pixel value range
     print(normalized_image)
-
-    

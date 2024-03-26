@@ -80,7 +80,7 @@ def calculate_Pxy(glcm, Pd):
     
     for i in range(N_g):
         for j in range(N_g):
-            if abs(i - j) == k:
+            if abs(i - j) == N_g:
                 Pxy += Pd[i][j]
     
     return Pxy
