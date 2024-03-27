@@ -16,10 +16,11 @@ import Checkbox from '../components/input/Checkbox';
 import Slider from '../components/input/Slider';
 
 const FormScreen = ({ navigation }) => {
+
   const basicStyles = useGlobalStyle();
   const { lastPressed, setLastPressed } = useContext(PermissionsContext);
   const { imgUri, image } = useContext(ImageContext);
-  const { age, setAge, gender, setGender, location, setLocation, 
+  const { age, setAge, location, setLocation, 
   sendData, locVal, setLocVal } =
     useContext(FormContext);
 
@@ -64,7 +65,7 @@ const FormScreen = ({ navigation }) => {
               placeholder={'Enter your age'}
               setState={setAge}
             />
-            <Checkbox gender={gender} setGender={setGender} />
+            <Checkbox />
             <Slider 
               items={location} 
               setItems={setLocation} 
