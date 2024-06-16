@@ -76,3 +76,7 @@ We welcome contributions! If you have suggestions, found a bug, or want to impro
 ## License
 
 This project is licensed under the [Apache 2.0](LICENSE).
+
+## Detailed explanation
+
+The detailed explanation on how this app should work is in Serbian and can be accessed through this url: https://docs.google.com/document/d/1NwlALtB-bNRuoXDWS3nWsnSi3bMCoCZO5Nre84uz1rA/edit?usp=sharing
